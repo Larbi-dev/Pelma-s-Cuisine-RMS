@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Pelma's Cuisine</title>
+    <meta name="description" content="Create your Pelma's Cuisine account for orders, reservations, and exclusive dining perks.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/forms.css">
+</head>
+<body class="auth-page">
+    <div class="auth-shell">
+        <section class="auth-visual" aria-label="Pelma's Cuisine welcome section">
+            <div class="auth-visual__content">
+                <img src="assets/logos/brand-logo.png" alt="Pelma's Cuisine logo" class="brand-mark">
+                <span class="eyebrow">New Here</span>
+                <h1>Join the premium dining club.</h1>
+                <p>Open an account to book tables, place orders, and unlock special offers curated for you.</p>
+                <ul class="auth-benefits">
+                    <li>Reserve your favorite table in seconds</li>
+                    <li>Save your favorite meals and addresses</li>
+                    <li>Enjoy exclusive seasonal deals</li>
+                </ul>
+            </div>
+        </section>
+
+        <section class="auth-card">
+            <div class="auth-card__top">
+                <a href="index.html" class="back-link">← Back to home</a>
+                <h2>Create account</h2>
+                <p>Set up your Pelma's Cuisine profile</p>
+            </div>
+
+            <form class="auth-form">
+                <div class="field">
+                    <label for="full-name">Full name</label>
+                    <input type="text" id="full-name" name="full-name" placeholder="Your name" required>
+                </div>
+
+                <div class="field">
+                    <label for="register-email">Email address</label>
+                    <input type="email" id="register-email" name="register-email" placeholder="you@example.com" required>
+                </div>
+
+                <div class="field">
+                    <label for="register-password">Password</label>
+                    <div class="password-wrap">
+                        <input type="password" id="register-password" name="register-password" placeholder="Create a password" required>
+                        <button type="button" class="password-toggle" aria-label="Show password">Show</button>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn auth-btn">Create account</button>
+            </form>
+
+            <p class="switch-text">Already have an account? <a href="login.html">Log in</a></p>
+        </section>
+    </div>
+
+    <script>
+        const passwordInput = document.getElementById('register-password');
+        const toggleButton = document.querySelector('.password-toggle');
+        const authForm = document.querySelector('.auth-form');
+
+        if (toggleButton && passwordInput) {
+            toggleButton.addEventListener('click', () => {
+                const isHidden = passwordInput.type === 'password';
+                passwordInput.type = isHidden ? 'text' : 'password';
+                toggleButton.textContent = isHidden ? 'Hide' : 'Show';
+            });
+        }
+
+        if (authForm) {
+            authForm.addEventListener('submit', (event) => {
+                event.preventDefault();
+            });
+        }
+    </script>
+</body>
+</html>

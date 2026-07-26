@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Pelma's Cuisine</title>
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="https://js.paystack.co/v1/inline.js"></script>
+</head>
+<body>
+
+    <div id="navbar-placeholder"></div>
+
+    <main class="checkout-container">
+        <h1>Secure Checkout</h1>
+        
+        <div class="checkout-grid">
+            <section class="checkout-form-section">
+                <form id="checkout-form">
+                    <h2>1. Delivery & Contact Details</h2>
+                    
+                    <div class="form-group">
+                        <label for="fullname">Full Name</label>
+                        <input type="text" id="fullname" required placeholder="e.g. Pelpuo John">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address (for receipt)</label>
+                        <input type="email" id="email" required placeholder="e.g. john@example.com">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number (MoMo / Contact)</label>
+                        <input type="tel" id="phone" required placeholder="e.g. 0241234567">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fulfillment">Fulfillment Type</label>
+                        <select id="fulfillment" onchange="updateTotals()">
+                            <option value="delivery">Delivery (GH₵ 20.00 fee)</option>
+                            <option value="pickup">Pickup at Restaurant (Free)</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group" id="location-group">
+                        <label for="location">Delivery Location / Landmark</label>
+                        <input type="text" id="location" placeholder="e.g. Ayeduase Gate, Kumasi">
+                    </div>
+
+                    <h2>2. Payment Method</h2>
+                    <p class="payment-hint">We accept MTN, Telecel, AirtelTigo (AT), Visa, and Mastercard securely via Paystack.</p>
+                    
+                    <button type="submit" class="btn-pay-now">Proceed to Pay Now</button>
+                </form>
+            </section>
+
+            <section class="order-summary-section">
+                <h2>Order Summary</h2>
+                <div id="cart-items-list" class="summary-items">
+                    </div>
+
+                <div class="summary-totals">
+                    <div class="summary-row">
+                        <span>Subtotal:</span>
+                        <span id="summary-subtotal">GH₵ 0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Delivery Fee:</span>
+                        <span id="summary-delivery">GH₵ 20.00</span>
+                    </div>
+                    <hr>
+                    <div class="summary-row grand-total">
+                        <span>Total Amount:</span>
+                        <span id="summary-total">GH₵ 0.00</span>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <script src="js/main.js"></script>
+    <script src="js/checkout.js"></script>
+</body>
+</html>

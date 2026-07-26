@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelma's Cuisine - Executive Admin Dashboard</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#0b0f19',
+                        cardBg: '#131d31',
+                        borderCol: '#1e293b',
+                        brandRed: '#c80707',
+                        neonGreen: '#10b981',
+                        alertRed: '#ef4444'
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js for Analytics -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Custom External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-darkBg text-slate-100 font-sans antialiased min-h-screen flex flex-col">
+
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-3"></div>
+
+    <div class="flex flex-1 overflow-hidden">
+        
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="w-64 bg-cardBg border-r border-borderCol flex flex-col justify-between hidden md:flex z-20">
+            <div>
+                <!-- Brand Header -->
+                <div class="p-6 border-b border-borderCol flex items-center gap-3">
+                    <div class="h-16 w-16 overflow-hidden flex items-center justify-center">
+                        <img src="../assets/logos/login-logo.png" alt="Pelma's Cuisine Logo" class="h-full w-full object-contain">
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-base tracking-wide text-white">Pelma's Cuisine</h1>
+                        <p class="text-xs text-slate-400 font-medium tracking-wider uppercase">Admin Portal</p>
+                    </div>
+                </div>
+
+                <!-- Nav Links -->
+                <nav class="p-4 space-y-1.5">
+                    <a href="#" onclick="switchTab('overview')" id="nav-overview" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold bg-brandRed text-white shadow-lg shadow-brandRed/20 transition-all">
+                        <i class="fa-solid fa-chart-pie w-5"></i> Overview
+                    </a>
+                    <a href="#" onclick="switchTab('menu')" id="nav-menu" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+                        <i class="fa-solid fa-bowl-food w-5"></i> Menu Management
+                    </a>
+                    <a href="#" onclick="switchTab('staff')" id="nav-staff" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+                        <i class="fa-solid fa-users-gear w-5"></i> Staff Activity
+                    </a>
+                    <a href="#" onclick="switchTab('inventory')" id="nav-inventory" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+                        <i class="fa-solid fa-boxes-stacked w-5"></i> Inventory & Stock
+                    </a>
+                    <a href="#" onclick="switchTab('reports')" id="nav-reports" class="flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition-all">
+                        <i class="fa-solid fa-file-invoice-dollar w-5"></i> Financial Reports
+                    </a>
+                </nav>
+            </div>
+
+            <!-- Sidebar Footer / System Status -->
+            <div class="p-4 border-t border-borderCol">
+                <div class="bg-slate-900/60 p-3.5 rounded-xl border border-borderCol flex items-center justify-between">
+                    <div class="flex items-center gap-2.5">
+                        <span class="relative flex h-2.5 w-2.5">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neonGreen opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-neonGreen"></span>
+                        </span>
+                        <span class="text-xs font-semibold text-slate-300">System Online</span>
+                    </div>
+                    <span class="text-[10px] text-slate-500 font-mono">v2.6</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT WRAPPER -->
+        <div class="flex-1 flex flex-col min-w-0 overflow-y-auto">
+            
+            <!-- TOP HEADER BAR -->
+            <header class="h-20 bg-cardBg/85 backdrop-blur-md border-b border-borderCol px-8 flex items-center justify-between sticky top-0 z-30">
+                <div class="flex items-center gap-4 w-96">
+                    <div class="relative w-full">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+                        <input type="text" placeholder="Search orders, dishes, or staff..." class="w-full bg-slate-900/80 border border-borderCol rounded-xl pl-10 pr-4 py-2 text-sm text-slate-200 focus:outline-none focus:border-brandRed transition-all">
+                    </div>
+                </div>
+
+                <div class="flex items-center gap-4">
+                    <!-- Notification Bell -->
+                   <!-- Notification Bell & Dropdown Wrapper -->
+<div class="relative">
+    <button id="notification-bell" onclick="toggleNotificationDropdown()" class="relative p-2.5 bg-slate-900/80 border border-borderCol rounded-xl text-slate-300 hover:text-white hover:border-slate-700 transition-all">
+        <i class="fa-solid fa-bell text-sm"></i>
+        <span id="notification-dot" class="absolute top-2 right-2 h-2 w-2 bg-brandRed rounded-full"></span>
+    </button>
+
+    <!-- Notification Dropdown Panel -->
+            <div id="notification-dropdown" class="absolute right-0 mt-3 w-80 bg-cardBg border border-borderCol rounded-2xl shadow-2xl hidden z-50 overflow-hidden transform transition-all">
+                <div class="p-4 border-b border-borderCol flex items-center justify-between bg-slate-900/50">
+                    <h4 class="font-bold text-sm text-white flex items-center gap-2">
+                        <i class="fa-solid fa-bell text-brandRed"></i> Notifications
+                    </h4>
+                    <button onclick="markAllNotificationsRead()" class="text-[10px] text-slate-400 hover:text-white font-semibold transition-colors">Mark all as read</button>
+                </div>
+                <div id="notification-list" class="divide-y divide-borderCol max-h-72 overflow-y-auto text-xs">
+                    <!-- Injected dynamically via JS -->
+                </div>
+                <div class="p-3 border-t border-borderCol text-center bg-slate-900/30">
+                    <span class="text-[10px] text-slate-500 font-medium">Showing recent system alerts</span>
+                </div>
+            </div>
+        </div>
+
+                    <!-- Admin Profile Dropdown Preview -->
+                    <div class="flex items-center gap-3 pl-4 border-l border-borderCol">
+                        <div class="h-10 w-10 rounded-xl bg-gradient-to-tr from-brandRed to-amber-600 flex items-center justify-center font-bold text-white shadow-md">
+                            AD
+                        </div>
+                        <div class="hidden sm:block">
+                            <h4 class="text-sm font-bold text-white leading-tight">Admin Master</h4>
+                            <p class="text-xs text-slate-400 font-medium">Chief Operations</p>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- DYNAMIC VIEW CONTAINER -->
+            <main class="p-8 flex-1 space-y-8">
+
+                <!-- VIEW 1: EXPANDED SCROLLABLE OVERVIEW & ANALYTICS -->
+                <div id="view-overview" class="space-y-8 pb-12">
+                    
+                    <!-- SECTION A: Top Metrics Grid -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        <!-- Revenue Card -->
+                        <div class="bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl glow-card relative overflow-hidden">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Revenue (Today)</p>
+                                    <h3 class="text-3xl font-extrabold text-white mt-2">GH₵ 14,850</h3>
+                                </div>
+                                <div class="p-3 bg-neonGreen/10 border border-neonGreen/20 rounded-xl text-neonGreen">
+                                    <i class="fa-solid fa-arrow-trend-up text-lg"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center gap-2 text-xs font-semibold text-neonGreen">
+                                <span>+18.4%</span>
+                                <span class="text-slate-400 font-normal">vs yesterday</span>
+                            </div>
+                        </div>
+
+                        <!-- Active Orders Card -->
+                        <div class="bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Active Orders</p>
+                                    <h3 class="text-3xl font-extrabold text-white mt-2">38</h3>
+                                </div>
+                                <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-xl text-amber-500">
+                                    <i class="fa-solid fa-fire-burner text-lg"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center gap-2 text-xs font-semibold text-amber-400">
+                                <span>12 preparing</span>
+                                <span class="text-slate-400 font-normal">• 26 delivery</span>
+                            </div>
+                        </div>
+
+                        <!-- Total Customers -->
+                        <div class="bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Total Customers</p>
+                                    <h3 class="text-3xl font-extrabold text-white mt-2">1,240</h3>
+                                </div>
+                                <div class="p-3 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-500">
+                                    <i class="fa-solid fa-users text-lg"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4 flex items-center gap-2 text-xs font-semibold text-neonGreen">
+                                <span>+5.2%</span>
+                                <span class="text-slate-400 font-normal">new signups today</span>
+                            </div>
+                        </div>
+
+                        <!-- Low Stock Alert Card -->
+                        <div class="bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl relative overflow-hidden border-l-4 border-l-alertRed">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Low Stock Alerts</p>
+                                    <h3 class="text-3xl font-extrabold text-alertRed mt-2">3 Items</h3>
+                                </div>
+                                <div class="p-3 bg-alertRed/10 border border-alertRed/20 rounded-xl text-alertRed">
+                                    <i class="fa-solid fa-triangle-exclamation text-lg"></i>
+                                </div>
+                            </div>
+                            <div class="mt-4 text-xs font-medium text-slate-400">
+                                Tilapia, Plantain & Palm Oil running low
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION B: Charts Section -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Revenue Trend Chart -->
+                        <div class="bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl lg:col-span-2 flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-6">
+                                <div>
+                                    <h3 class="font-bold text-base text-white">Sales & Revenue Trend</h3>
+                                    <p class="text-xs text-slate-400">Hourly revenue vs operational expenditure (GHS)</p>
+                                </div>
+                                <div class="flex items-center gap-2">
+                                    <span class="px-3 py-1 bg-neonGreen/10 text-neonGreen border border-neonGreen/20 text-xs font-semibold rounded-lg">Revenue</span>
+                                    <span class="px-3 py-1 bg-alertRed/10 text-alertRed border border-alertRed/20 text-xs font-semibold rounded-lg">Expenses</span>
+                                </div>
+                            </div>
+                            <div class="h-72 w-full">
+                                <canvas id="revenueChart"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Top Selling Dishes Breakdown -->
+                        <div class="bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-base text-white">Top-Selling Dishes</h3>
+                                <p class="text-xs text-slate-400 mb-4">Customer favorites breakdown</p>
+                            </div>
+                            <div class="h-60 w-full flex items-center justify-center">
+                                <canvas id="dishesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION C: Live Transactions Stream & Staff Performance -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Recent Orders Table -->
+                        <div class="bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl lg:col-span-2 flex flex-col justify-between">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <h3 class="font-bold text-base text-white">Live Customer Order Stream</h3>
+                                    <p class="text-xs text-slate-400">Real-time incoming orders across digital channels</p>
+                                </div>
+                                <span class="text-xs text-neonGreen font-semibold flex items-center gap-1.5">
+                                    <span class="h-2 w-2 rounded-full bg-neonGreen animate-pulse"></span> Live Sync Active
+                                </span>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-borderCol text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                            <th class="py-3 px-4">Order ID</th>
+                                            <th class="py-3 px-4">Customer</th>
+                                            <th class="py-3 px-4">Items</th>
+                                            <th class="py-3 px-4">Total</th>
+                                            <th class="py-3 px-4">Payment</th>
+                                            <th class="py-3 px-4 text-right">Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-borderCol text-xs text-slate-300">
+                                        <tr class="hover:bg-slate-800/30">
+                                            <td class="py-3 px-4 font-mono font-bold text-white">#PC-9842</td>
+                                            <td class="py-3 px-4 font-medium text-white">Kofi Mensah</td>
+                                            <td class="py-3 px-4">Seafood Waakye (x2)</td>
+                                            <td class="py-3 px-4 font-bold text-white">GH₵ 240.00</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded-md font-semibold">MTN MoMo</span></td>
+                                            <td class="py-3 px-4 text-right"><span class="px-2.5 py-1 bg-neonGreen/10 text-neonGreen font-semibold rounded-full">Completed</span></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-800/30">
+                                            <td class="py-3 px-4 font-mono font-bold text-white">#PC-9841</td>
+                                            <td class="py-3 px-4 font-medium text-white">Abena Serwaa</td>
+                                            <td class="py-3 px-4">Banku & Tilapia</td>
+                                            <td class="py-3 px-4 font-bold text-white">GH₵ 150.00</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-amber-500/10 text-amber-400 rounded-md font-semibold">Cash</span></td>
+                                            <td class="py-3 px-4 text-right"><span class="px-2.5 py-1 bg-amber-500/10 text-amber-400 font-semibold rounded-full">Preparing</span></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-800/30">
+                                            <td class="py-3 px-4 font-mono font-bold text-white">#PC-9840</td>
+                                            <td class="py-3 px-4 font-medium text-white">Yaw Boateng</td>
+                                            <td class="py-3 px-4">Assorted Fufu</td>
+                                            <td class="py-3 px-4 font-bold text-white">GH₵ 110.00</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded-md font-semibold">Card</span></td>
+                                            <td class="py-3 px-4 text-right"><span class="px-2.5 py-1 bg-neonGreen/10 text-neonGreen font-semibold rounded-full">Completed</span></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-800/30">
+                                            <td class="py-3 px-4 font-mono font-bold text-white">#PC-9839</td>
+                                            <td class="py-3 px-4 font-medium text-white">Ama Adoma</td>
+                                            <td class="py-3 px-4">Jollof Rice Deluxe</td>
+                                            <td class="py-3 px-4 font-bold text-white">GH₵ 95.00</td>
+                                            <td class="py-3 px-4"><span class="px-2 py-0.5 bg-blue-500/10 text-blue-400 rounded-md font-semibold">MTN MoMo</span></td>
+                                            <td class="py-3 px-4 text-right"><span class="px-2.5 py-1 bg-brandRed/10 text-brandRed font-semibold rounded-full">Dispatched</span></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Staff Shift Activity & Performance Card -->
+                        <div class="bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-base text-white">Active Shift Staff</h3>
+                                <p class="text-xs text-slate-400 mb-4">On-duty personnel performance log</p>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div class="flex items-center justify-between p-3 bg-slate-900/60 border border-borderCol rounded-xl">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-9 w-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center font-bold text-xs">CK</div>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-white">Chef Kofi</h4>
+                                            <p class="text-[10px] text-slate-400">Head Kitchen Lead</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-neonGreen">48 Orders</span>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 bg-slate-900/60 border border-borderCol rounded-xl">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-9 w-9 rounded-xl bg-blue-500/20 text-blue-400 flex items-center justify-center font-bold text-xs">EA</div>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-white">Efua Akoto</h4>
+                                            <p class="text-[10px] text-slate-400">Senior Cashier</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-neonGreen">GH₵ 6.2k Logged</span>
+                                </div>
+
+                                <div class="flex items-center justify-between p-3 bg-slate-900/60 border border-borderCol rounded-xl">
+                                    <div class="flex items-center gap-3">
+                                        <div class="h-9 w-9 rounded-xl bg-purple-500/20 text-purple-400 flex items-center justify-center font-bold text-xs">QN</div>
+                                        <div>
+                                            <h4 class="text-xs font-bold text-white">Kwame Nkrumah</h4>
+                                            <p class="text-[10px] text-slate-400">Delivery Dispatch</p>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-amber-400">18 Deliveries</span>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-borderCol text-center">
+                                <button onclick="switchTab('staff')" class="text-xs text-brandRed font-semibold hover:underline">View Full Staff Roster &rarr;</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- SECTION D: Low Stock Supply & Quick Restock Feed -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Inventory Depletion Table -->
+                        <div class="bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl lg:col-span-2">
+                            <div class="flex items-center justify-between mb-4">
+                                <div>
+                                    <h3 class="font-bold text-base text-white">Critical Inventory Depletion Alert</h3>
+                                    <p class="text-xs text-slate-400">Raw ingredients approaching reorder threshold</p>
+                                </div>
+                                <button onclick="switchTab('inventory')" class="text-xs text-neonGreen font-semibold hover:underline">Manage All Stock &rarr;</button>
+                            </div>
+
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-borderCol text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                            <th class="py-3 px-4">Ingredient Name</th>
+                                            <th class="py-3 px-4">Category</th>
+                                            <th class="py-3 px-4">Current Stock</th>
+                                            <th class="py-3 px-4">Threshold</th>
+                                            <th class="py-3 px-4 text-right">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="divide-y divide-borderCol text-xs text-slate-300">
+                                        <tr class="hover:bg-slate-800/30">
+                                            <td class="py-3 px-4 font-bold text-white flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-alertRed"></span> Fresh Tilapia</td>
+                                            <td class="py-3 px-4">Proteins</td>
+                                            <td class="py-3 px-4 font-bold text-alertRed">7 Kg</td>
+                                            <td class="py-3 px-4">15 Kg</td>
+                                            <td class="py-3 px-4 text-right"><button onclick="showToast('Restock order sent to supplier for Fresh Tilapia!')" class="px-3 py-1 bg-brandRed hover:bg-red-700 text-white font-semibold rounded-lg transition-all">Restock</button></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-800/30">
+                                            <td class="py-3 px-4 font-bold text-white flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-amber-500"></span> Unripe Plantain</td>
+                                            <td class="py-3 px-4">Produce</td>
+                                            <td class="py-3 px-4 font-bold text-amber-400">3 Crates</td>
+                                            <td class="py-3 px-4">5 Crates</td>
+                                            <td class="py-3 px-4 text-right"><button onclick="showToast('Restock order sent to supplier for Plantain!')" class="px-3 py-1 bg-brandRed hover:bg-red-700 text-white font-semibold rounded-lg transition-all">Restock</button></td>
+                                        </tr>
+                                        <tr class="hover:bg-slate-800/30">
+                                            <td class="py-3 px-4 font-bold text-white flex items-center gap-2"><span class="h-2 w-2 rounded-full bg-alertRed"></span> Palm Oil (Local)</td>
+                                            <td class="py-3 px-4">Condiments</td>
+                                            <td class="py-3 px-4 font-bold text-alertRed">2 Gallons</td>
+                                            <td class="py-3 px-4">6 Gallons</td>
+                                            <td class="py-3 px-4 text-right"><button onclick="showToast('Restock order sent to supplier for Palm Oil!')" class="px-3 py-1 bg-brandRed hover:bg-red-700 text-white font-semibold rounded-lg transition-all">Restock</button></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Quick System Actions Card -->
+                        <div class="bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold text-base text-white">Emergency Admin Overrides</h3>
+                                <p class="text-xs text-slate-400 mb-4">Instant operational controls for shift leads</p>
+                            </div>
+
+                            <div class="space-y-3">
+                                <button onclick="showToast('Kitchen pause broadcasted to all terminals!', 'error')" class="w-full py-2.5 px-4 bg-slate-900 border border-borderCol hover:border-alertRed text-slate-200 text-xs font-bold rounded-xl flex items-center justify-between transition-all group">
+                                    <span>Pause Online Kitchen Orders</span>
+                                    <i class="fa-solid fa-triangle-exclamation text-alertRed"></i>
+                                </button>
+                                <button onclick="showToast('Daily shift settlement register locked.')" class="w-full py-2.5 px-4 bg-slate-900 border border-borderCol hover:border-neonGreen text-slate-200 text-xs font-bold rounded-xl flex items-center justify-between transition-all group">
+                                    <span>Lock Shift Register</span>
+                                    <i class="fa-solid fa-lock text-neonGreen"></i>
+                                </button>
+                                <button onclick="showToast('Broadcast alert sent: All staff report to briefing.')" class="w-full py-2.5 px-4 bg-slate-900 border border-borderCol hover:border-blue-500 text-slate-200 text-xs font-bold rounded-xl flex items-center justify-between transition-all group">
+                                    <span>Broadcast Staff Pager</span>
+                                    <i class="fa-solid fa-bullhorn text-blue-400"></i>
+                                </button>
+                            </div>
+
+                            <div class="mt-4 pt-3 border-t border-borderCol text-center">
+                                <span class="text-[10px] text-slate-500 font-mono">Secure Admin Token Verified</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- VIEW 2: MENU MANAGEMENT (CRUD) -->
+                <div id="view-menu" class="space-y-6 hidden">
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl">
+                        <div>
+                            <h2 class="text-xl font-extrabold text-white flex items-center gap-3">
+                                <span>Menu Inventory Management</span>
+                                <span id="dish-count-badge" class="px-3 py-0.5 bg-brandRed/20 border border-brandRed/30 text-brandRed text-xs rounded-full font-bold">5 Active Dishes</span>
+                            </h2>
+                            <p class="text-xs text-slate-400 mt-1">Add, update prices, or toggle stock status for Pelma's Cuisine menu items.</p>
+                        </div>
+                        <button onclick="openAddDishModal()" class="px-5 py-2.5 bg-brandRed hover:bg-red-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-brandRed/20 flex items-center gap-2 transition-all">
+                            <i class="fa-solid fa-plus"></i> Add New Dish
+                        </button>
+                    </div>
+
+                    <div class="bg-cardBg border border-borderCol rounded-2xl shadow-xl overflow-hidden">
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="border-b border-borderCol bg-slate-900/50 text-xs font-semibold uppercase tracking-wider text-slate-400">
+                                        <th class="py-4 px-6">Dish Details</th>
+                                        <th class="py-4 px-6">Category</th>
+                                        <th class="py-4 px-6">Price</th>
+                                        <th class="py-4 px-6">Stock Status</th>
+                                        <th class="py-4 px-6 text-right">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="dishes-table-body" class="divide-y divide-borderCol text-sm">
+                                    <!-- Injected via JavaScript -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VIEW 3: STAFF MANAGEMENT -->
+                <div id="view-staff" class="space-y-6 hidden">
+                    <div class="bg-cardBg border border-borderCol p-12 rounded-2xl text-center">
+                        <i class="fa-solid fa-users-gear text-4xl text-brandRed mb-4"></i>
+                        <h3 class="text-xl font-bold text-white">Staff Management Portal</h3>
+                        <p class="text-slate-400 text-sm mt-1">Manage shift logs, employee roles, and performance metrics.</p>
+                    </div>
+                </div>
+
+                <!-- VIEW 4: INVENTORY -->
+                <div id="view-inventory" class="space-y-6 hidden">
+                    <div class="bg-cardBg border border-borderCol p-12 rounded-2xl text-center">
+                        <i class="fa-solid fa-boxes-stacked text-4xl text-alertRed mb-4"></i>
+                        <h3 class="text-xl font-bold text-white">Inventory & Stock Tracking</h3>
+                        <p class="text-slate-400 text-sm mt-1">Real-time raw ingredient audits and supplier logs.</p>
+                    </div>
+                </div>
+
+                <!-- VIEW 5: FINANCIAL REPORTS (2-PAGE CONFIGURABLE EXPORT) -->
+                <div id="view-reports" class="space-y-6 hidden">
+                    <div class="bg-cardBg border border-borderCol p-8 rounded-2xl shadow-xl flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                        <div>
+                            <h3 class="text-xl font-bold text-white flex items-center gap-2">
+                                <i class="fa-solid fa-file-invoice-dollar text-neonGreen"></i> Executive Report Generator & Analytics Suite
+                            </h3>
+                            <p class="text-slate-400 text-xs mt-1">Configure parameters and generate comprehensive two-page corporate audit reports.</p>
+                        </div>
+                        <button onclick="openReportConfigModal()" class="px-5 py-2.5 bg-neonGreen hover:bg-emerald-600 text-slate-950 font-bold text-sm rounded-xl shadow-lg shadow-neonGreen/20 flex items-center gap-2 transition-all">
+                            <i class="fa-solid fa-sliders"></i> Configure & Generate Report
+                        </button>
+                    </div>
+
+                    <!-- Quick Summary Preview Card -->
+                    <div class="bg-cardBg border border-borderCol p-6 rounded-2xl shadow-xl grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <div class="border-b md:border-b-0 md:border-r border-borderCol pb-4 md:pb-0">
+                            <p class="text-xs text-slate-400 font-semibold uppercase">Total Gross Sales</p>
+                            <h4 class="text-2xl font-extrabold text-white mt-1">GH₵ 14,850.00</h4>
+                        </div>
+                        <div class="border-b md:border-b-0 md:border-r border-borderCol pb-4 md:pb-0">
+                            <p class="text-xs text-slate-400 font-semibold uppercase">Total Operational Cost</p>
+                            <h4 class="text-2xl font-extrabold text-alertRed mt-1">GH₵ 5,600.00</h4>
+                        </div>
+                        <div>
+                            <p class="text-xs text-slate-400 font-semibold uppercase">Net Profit Margin</p>
+                            <h4 class="text-2xl font-extrabold text-neonGreen mt-1">GH₵ 9,250.00</h4>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+    </div>
+
+    <!-- ADD/EDIT DISH MODAL -->
+    <div id="dish-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-borderCol w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden transform transition-all">
+            <div class="p-6 border-b border-borderCol flex justify-between items-center bg-slate-900/50">
+                <h3 id="modal-title" class="font-bold text-lg text-white">Add New Dish</h3>
+                <button onclick="closeDishModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <form id="dish-form" onsubmit="handleDishSubmit(event)" class="p-6 space-y-4">
+                <input type="hidden" id="dish-id">
+                
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Dish Name</label>
+                    <input type="text" id="dish-name" required placeholder="e.g., Special Seafood Waakye" class="w-full bg-slate-900 border border-borderCol rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-brandRed">
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Category</label>
+                        <select id="dish-category" class="w-full bg-slate-900 border border-borderCol rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-brandRed">
+                            <option value="Rice Specials">Rice Specials</option>
+                            <option value="Swallow & Soup">Swallow & Soup</option>
+                            <option value="Local Delicacies">Local Delicacies</option>
+                            <option value="Continental">Continental</option>
+                            <option value="Drinks & Beverages">Drinks & Beverages</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Price (GH₵)</label>
+                        <input type="number" step="0.01" id="dish-price" required placeholder="85.00" class="w-full bg-slate-900 border border-borderCol rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-brandRed">
+                    </div>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Stock Status</label>
+                    <select id="dish-status" class="w-full bg-slate-900 border border-borderCol rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-brandRed">
+                        <option value="In Stock">In Stock (Green Badge)</option>
+                        <option value="Sold Out">Sold Out (Red Badge)</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1.5">Image Thumbnail URL</label>
+                    <input type="text" id="dish-image" placeholder="https://images.unsplash.com/photo-..." class="w-full bg-slate-900 border border-borderCol rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-brandRed">
+                </div>
+
+                <div class="pt-4 flex justify-end gap-3 border-t border-borderCol">
+                    <button type="button" onclick="closeDishModal()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm rounded-xl transition-all">Cancel</button>
+                    <button type="submit" class="px-5 py-2.5 bg-brandRed hover:bg-red-700 text-white font-bold text-sm rounded-xl shadow-lg shadow-brandRed/20 transition-all">Save Dish</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- REPORT CONFIGURATION MODAL -->
+    <div id="report-modal" class="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-cardBg border border-borderCol w-full max-w-xl rounded-2xl shadow-2xl overflow-hidden transform transition-all">
+            <div class="p-6 border-b border-borderCol flex justify-between items-center bg-slate-900/50">
+                <h3 class="font-bold text-lg text-white flex items-center gap-2">
+                    <i class="fa-solid fa-file-shield text-neonGreen"></i> Executive 2-Page Report Customizer
+                </h3>
+                <button onclick="closeReportConfigModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <div class="p-6 space-y-5">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Select Primary Report Focus</label>
+                    <select id="report-type" class="w-full bg-slate-900 border border-borderCol rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-neonGreen">
+                        <option value="comprehensive">Comprehensive Financial & Operational Audit (Full 2-Page)</option>
+                        <option value="sales">Deep-Dive Sales & Revenue Performance</option>
+                        <option value="inventory">Inventory Consumption & Supply Chain Audit</option>
+                        <option value="staff">Staff Shift Logs & Productivity Breakdown</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">Reporting Timeframe</label>
+                    <select id="report-timeframe" class="w-full bg-slate-900 border border-borderCol rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-neonGreen">
+                        <option value="Today (Daily Shift)">Today (Daily Shift Audit)</option>
+                        <option value="This Week">Current Week Summary</option>
+                        <option value="This Month">Monthly Executive Statement</option>
+                    </select>
+                </div>
+
+                <div class="space-y-2">
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400">Include Sections & Visualizations</label>
+                    <div class="grid grid-cols-2 gap-3">
+                        <label class="flex items-center gap-2.5 bg-slate-900/60 p-3 rounded-xl border border-borderCol cursor-pointer">
+                            <input type="checkbox" id="inc-charts" checked class="rounded bg-slate-800 border-borderCol text-neonGreen focus:ring-0">
+                            <span class="text-xs font-medium text-slate-200">Embedded Chart Analytics</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 bg-slate-900/60 p-3 rounded-xl border border-borderCol cursor-pointer">
+                            <input type="checkbox" id="inc-breakdown" checked class="rounded bg-slate-800 border-borderCol text-neonGreen focus:ring-0">
+                            <span class="text-xs font-medium text-slate-200">Detailed Itemized Tables</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 bg-slate-900/60 p-3 rounded-xl border border-borderCol cursor-pointer">
+                            <input type="checkbox" id="inc-tax" checked class="rounded bg-slate-800 border-borderCol text-neonGreen focus:ring-0">
+                            <span class="text-xs font-medium text-slate-200">Tax & VAT Breakdown</span>
+                        </label>
+                        <label class="flex items-center gap-2.5 bg-slate-900/60 p-3 rounded-xl border border-borderCol cursor-pointer">
+                            <input type="checkbox" id="inc-signatures" checked class="rounded bg-slate-800 border-borderCol text-neonGreen focus:ring-0">
+                            <span class="text-xs font-medium text-slate-200">Management Signatures</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-end gap-3 border-t border-borderCol">
+                    <button type="button" onclick="closeReportConfigModal()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm rounded-xl transition-all">Cancel</button>
+                    <button type="button" onclick="generateCustomPDFReport()" class="px-5 py-2.5 bg-neonGreen hover:bg-emerald-600 text-slate-950 font-bold text-sm rounded-xl shadow-lg shadow-neonGreen/20 flex items-center gap-2 transition-all">
+                        <i class="fa-solid fa-file-pdf"></i> Generate & Print Report
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- External Script Link -->
+    <script src="script.js"></script>
+</body>
+</html>

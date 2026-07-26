@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Menu - Pelma's Cuisine</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <header>
+        <nav class="container flex-between">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/logos/brand-logo.png" alt="Pelma's Cuisine Logo" class="brand-logo">
+                </a>
+            </div>
+
+            <ul class="nav-links flex">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="menu.html" class="active">Menu</a></li>
+                <li><a href="index.html#features">Why Us</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions flex">
+                <a href="login.html" class="btn btn-outline">Login</a>
+                <a href="checkout.html" class="btn cart-btn-nav">Cart <span id="cartCount">(0)</span></a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="menu-hero">
+        <div class="container text-center">
+            <h1>Our Executive Menu</h1>
+            <p>Indulge in authentic Ghanaian local delicacies or explore world-class continental cuisine.</p>
+            
+            <div class="category-toggle-wrapper">
+                <button class="toggle-tab active" data-category="local">Local</button>
+                <button class="toggle-tab" data-category="continental"> Continental (25)</button>
+            </div>
+
+            <div class="search-box-container">
+                <input type="text" id="menuSearch" placeholder="Search for jollof, waakye, pizza, pasta..." class="menu-search-input">
+            </div>
+        </div>
+    </section>
+
+    <section class="full-menu-section">
+        <div class="container">
+            
+            <div id="localSection" class="menu-category-content active-category">
+                <div class="food-grid grid">
+                    
+                    <div class="card animate-fade-in" data-name="Assorted Jollof Rice">
+                        <div class="card-image-wrapper">
+                            <span class="food-tag">Best Seller</span>
+                            <img src="assets/images/assorted_jollof.jpg" alt="Assorted Jollof Rice" class="food-img">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header-flex">
+                                <h3>Assorted Jollof Rice</h3>
+                                <span class="price">₵55.00</span>
+                            </div>
+                            <p>Smoky party jollof served with tender beef, grilled chicken, and fried plantains.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Waakye Special">
+                        <div class="card-image-wrapper">
+                            <span class="food-tag">Must Try</span>
+                            <img src="assets/images/waakye.jpg" alt="Waakye Special" class="food-img">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header-flex">
+                                <h3>Waakye Special</h3>
+                                <span class="price">₵45.00</span>
+                            </div>
+                            <p>Traditional rice and beans packed with spaghetti, shito, egg, welensu, and wele.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Banku with Okro Stew">
+                        <div class="card-image-wrapper">
+                            <span class="food-tag">Traditional</span>
+                            <img src="assets/images/banku_okro.jpg" alt="Banku with Okro Stew" class="food-img">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header-flex">
+                                <h3>Banku with Okro Stew</h3>
+                                <span class="price">₵60.00</span>
+                            </div>
+                            <p>Hot smooth banku paired with rich seafood-infused red okro and crab.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Banku and Grilled Tilapia">
+                        <div class="card-image-wrapper">
+                            <span class="food-tag">Chef Choice</span>
+                            <img src="assets/images/banku_tilapia.jpg" alt="Banku and Grilled Tilapia" class="food-img">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header-flex">
+                                <h3>Banku & Grilled Tilapia</h3>
+                                <span class="price">₵85.00</span>
+                            </div>
+                            <p>Fresh whole grilled Volta tilapia served with hot pepper sauce and banku.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Fufu with Light Soup">
+                        <div class="card-image-wrapper">
+                            <span class="food-tag">Weekend Special</span>
+                            <img src="assets/images/fufu_lightsoup.jpg" alt="Fufu with Light Soup" class="food-img">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header-flex">
+                                <h3>Fufu with Light Soup</h3>
+                                <span class="price">₵70.00</span>
+                            </div>
+                            <p>Pounded cassava and plantain with spicy goat meat light soup.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Red Red (Beans and Plantain)">
+                        <div class="card-image-wrapper"><img src="assets/images/red_red.jpg" alt="Red Red" class="food-img"></div>
+                        <div class="card-body">
+                            <div class="card-header-flex"><h3>Red Red (Beans & Plantain)</h3><span class="price">₵35.00</span></div>
+                            <p>Fried ripe plantains served with delicious palm oil bean stew and gari.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Ampesi with Kontomire">
+                        <div class="card-image-wrapper"><img src="assets/images/ampesi.jpg" alt="Ampesi" class="food-img"></div>
+                        <div class="card-body">
+                            <div class="card-header-flex"><h3>Yam & Plantain Ampesi</h3><span class="price">₵40.00</span></div>
+                            <p>Boiled yam and plantain served with mashed kontomire stew and avocado.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Ga Kenkey and Fish">
+                        <div class="card-image-wrapper"><img src="assets/images/kenkey.jpg" alt="Kenkey" class="food-img"></div>
+                        <div class="card-body">
+                            <div class="card-header-flex"><h3>Ga Kenkey & Fried Fish</h3><span class="price">₵40.00</span></div>
+                            <p>Fermented maize ball served with hot pepper, shito, and fried octopus/fish.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Tuo Zaafi">
+                        <div class="card-image-wrapper"><img src="assets/images/tuo_zaafi.jpg" alt="Tuo Zaafi" class="food-img"></div>
+                        <div class="card-body">
+                            <div class="card-header-flex"><h3>Tuo Zaafi (TZ)</h3><span class="price">₵50.00</span></div>
+                            <p>Northern corn meal dish served with green ayoyo soup and tender beef.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Kelewele">
+                        <div class="card-image-wrapper"><img src="assets/images/kelewele.jpg" alt="Kelewele" class="food-img"></div>
+                        <div class="card-body">
+                            <div class="card-header-flex"><h3>Spicy Kelewele</h3><span class="price">₵25.00</span></div>
+                            <p>Diced ripe plantains seasoned with ginger, chili, and spices, fried golden.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Kokonte and Groundnut Soup"><div class="card-image-wrapper"><img src="assets/images/kokonte.jpg" alt="Kokonte" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Kokonte & Peanut Soup</h3><span class="price">₵55.00</span></div><p>Classic brown cassava flour swallow paired with rich creamy groundnut soup.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Fufu with Peanut Soup"><div class="card-image-wrapper"><img src="assets/images/fufu_peanut.jpg" alt="Fufu Peanut" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Fufu & Peanut Soup</h3><span class="price">₵75.00</span></div><p>Smooth fufu served with thick groundnut soup and smoked turkey.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Fried Yam with Gizzard"><div class="card-image-wrapper"><img src="assets/images/yam_gizzard.jpg" alt="Yam Gizzard" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Fried Yam & Gizzard</h3><span class="price">₵50.00</span></div><p>Crispy fried yam sticks served with spicy peppered chicken gizzards.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Kokonte with Palm Nut Soup"><div class="card-image-wrapper"><img src="assets/images/kokonte_palmnut.jpg" alt="Kokonte" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Kokonte & Palm Nut Soup</h3><span class="price">₵60.00</span></div><p>Traditional abenkwan soup with fresh fish and smooth kokonte.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Beans Stew with Fried Yam"><div class="card-image-wrapper"><img src="assets/images/beans_yam.png" alt="Beans Yam" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Beans Stew & Fried Yam</h3><span class="price">₵45.00</span></div><p>Savory red bean stew served alongside golden fried yam chunks.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Banku with Pepper and Octopus"><div class="card-image-wrapper"><img src="assets/images/banku_octopus.jpg" alt="Banku Octopus" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Banku & Pepper Octopus</h3><span class="price">₵70.00</span></div><p>Chewy banku served with hot black pepper shito and seasoned octopus.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Gari Foto"><div class="card-image-wrapper"><img src="assets/images/gari_foto.jpg" alt="Gari Foto" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Gari Foto Special</h3><span class="price">₵35.00</span></div><p>Moist gari stirred in rich tomato egg stew with onions and tuna flakes.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Gobɛ Special"><div class="card-image-wrapper"><img src="assets/images/gobe_special.jpg" alt="Gobe" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Executive Gobɛ</h3><span class="price">₵40.00</span></div><p>Beans, plantain, fried egg, avocado slice, and sausage bits.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Millet Porridge and Koose"><div class="card-image-wrapper"><img src="assets/images/hausa_koko.jpg" alt="Hausa Koko" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Hausa Koko & Koose</h3><span class="price">₵20.00</span></div><p>Spicy hot millet porridge served with crispy brown bean cakes (koose).</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Fante Kenkey with Fried Fish"><div class="card-image-wrapper"><img src="assets/images/fante_kenkey.jpg" alt="Fante Kenkey" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Fante Kenkey & Fish</h3><span class="price">₵45.00</span></div><p>Wrapped sour corn meal served with hot pepper and fried redfish.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Omo Tuo with Groundnut Soup"><div class="card-image-wrapper"><img src="assets/images/omotuo.jpg" alt="Omo Tuo" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Omo Tuo & Groundnut Soup</h3><span class="price">₵60.00</span></div><p>Soft rice balls served with aromatic peanut soup and beef chunks.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Apapransa"><div class="card-image-wrapper"><img src="assets/images/apapransa.jpg" alt="Apapransa" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Traditional Apapransa</h3><span class="price">₵50.00</span></div><p>Roasted corn flour cooked in palm oil with beans and crab toppings.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Etɔ (Mashed Yam)"><div class="card-image-wrapper"><img src="assets/images/eto.jpg" alt="Eto" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Festival Etɔ</h3><span class="price">₵45.00</span></div><p>Mashed boiled yam seasoned with red palm oil, boiled eggs, and groundnuts.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Kontomire Stew with Boiled Plantain"><div class="card-image-wrapper"><img src="assets/images/kontomire_stew.jpg" alt="Kontomire" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Kontomire Stew & Plantain</h3><span class="price">₵40.00</span></div><p>Mashed cocoyam leaves cooked with melon seeds, fish, and boiled plantains.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+
+                </div>
+            </div>
+
+            <div id="continentalSection" class="menu-category-content">
+                <div class="food-grid grid">
+
+                    <div class="card animate-fade-in" data-name="Deluxe Pepperoni Pizza">
+                        <div class="card-image-wrapper">
+                            <span class="food-tag">Chef Choice</span>
+                            <img src="assets/images/deluxe_pizza.jpg" alt="Deluxe Pizza" class="food-img">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header-flex">
+                                <h3>Deluxe Pepperoni Pizza</h3>
+                                <span class="price">₵85.00</span>
+                            </div>
+                            <p>Wood-fired crust loaded with mozzarella cheese, pepperoni slices, and oregano herbs.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Creamy Alfredo Pasta">
+                        <div class="card-image-wrapper">
+                            <span class="food-tag">Bestseller</span>
+                            <img src="assets/images/alfredo_pasta.jpg" alt="Alfredo Pasta" class="food-img">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header-flex">
+                                <h3>Creamy Alfredo Pasta</h3>
+                                <span class="price">₵75.00</span>
+                            </div>
+                            <p>Fettuccine noodles tossed in rich garlic parmesan cream sauce with grilled chicken.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Classic Beef Burger">
+                        <div class="card-image-wrapper">
+                            <span class="food-tag">Juicy</span>
+                            <img src="assets/images/beef_burger.jpg" alt="Beef Burger" class="food-img">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header-flex">
+                                <h3>Classic Beef Burger</h3>
+                                <span class="price">₵65.00</span>
+                            </div>
+                            <p>Double beef patty with melted cheddar, lettuce, tomatoes, and special house sauce.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Crispy Chicken Wings">
+                        <div class="card-image-wrapper">
+                            <span class="food-tag">Hot & Spicy</span>
+                            <img src="assets/images/chicken_wings.jpg" alt="Chicken Wings" class="food-img">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header-flex">
+                                <h3>Crispy Buffalo Wings</h3>
+                                <span class="price">₵55.00</span>
+                            </div>
+                            <p>Deep-fried chicken wings glazed in tangy buffalo barbecue sauce with ranch dip.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Grilled Steak with Fries">
+                        <div class="card-image-wrapper">
+                            <span class="food-tag">Premium</span>
+                            <img src="assets/images/grilled_steak.jpg" alt="Grilled Steak" class="food-img">
+                        </div>
+                        <div class="card-body">
+                            <div class="card-header-flex">
+                                <h3>Grilled Ribeye Steak</h3>
+                                <span class="price">₵120.00</span>
+                            </div>
+                            <p>Tender herb-butter glazed beef steak served with seasoned french fries.</p>
+                            <button class="btn card-btn add-to-cart">Add to Cart</button>
+                        </div>
+                    </div>
+
+                    <div class="card animate-fade-in" data-name="Seafood Fried Rice"><div class="card-image-wrapper"><img src="assets/images/sea_food_friedrice.jpg" alt="Fried Rice" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Oriental Seafood Fried Rice</h3><span class="price">₵70.00</span></div><p>Wok-tossed basmati rice with prawns, calamari, spring onions, and eggs.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Chicken Club Sandwich"><div class="card-image-wrapper"><img src="assets/images/club_sandwich.jpg" alt="Sandwich" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Chicken Club Sandwich</h3><span class="price">₵50.00</span></div><p>Triple decker toasted bread with grilled chicken, bacon, lettuce, and mayo.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Caesar Salad"><div class="card-image-wrapper"><img src="assets/images/caesar_salad.jpg" alt="Salad" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Fresh Caesar Salad</h3><span class="price">₵45.00</span></div><p>Crisp romaine lettuce, croutons, parmesan shavings, and grilled chicken breast.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="BBQ Pork Ribs"><div class="card-image-wrapper"><img src="assets/images/pork_ribs.jpg" alt="Ribs" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Smoked BBQ Pork Ribs</h3><span class="price">₵110.00</span></div><p>Slow-cooked tender pork ribs glazed in smoky barbecue sauce.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Spaghetti Bolognese"><div class="card-image-wrapper"><img src="assets/images/bolognese.jpg" alt="Bolognese" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Spaghetti Bolognese</h3><span class="price">₵70.00</span></div><p>Italian pasta topped with slow-simmered rich beef and tomato ragu sauce.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Fish and Chips"><div class="card-image-wrapper"><img src="assets/images/fish_chips.jpg" alt="Fish Chips" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>English Fish & Chips</h3><span class="price">₵80.00</span></div><p>Crispy battered cod fillet served with golden fries and tartar sauce.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Mushroom Risotto"><div class="card-image-wrapper"><img src="assets/images/risotto.jpg" alt="Risotto" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Creamy Mushroom Risotto</h3><span class="price">₵75.00</span></div><p>Arborio rice cooked slow with wild forest mushrooms, butter, and parmesan.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Margherita Pizza"><div class="card-image-wrapper"><img src="assets/images/margherita.jpg" alt="Margherita" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Classic Margherita Pizza</h3><span class="price">₵70.00</span></div><p>Simple yet delicious pizza topped with fresh tomato sauce, mozzarella, and basil.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Chicken Fajitas"><div class="card-image-wrapper"><img src="assets/images/fajitas.jpg" alt="Fajitas" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Sizzling Chicken Fajitas</h3><span class="price">₵90.00</span></div><p>Grilled chicken strips with bell peppers and onions served with tortilla wraps.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Beef Lasagna"><div class="card-image-wrapper"><img src="assets/images/lasagna.jpg" alt="Lasagna" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Baked Beef Lasagna</h3><span class="price">₵85.00</span></div><p>Layered pasta sheets with minced beef, bechamel sauce, and melted cheese.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Crispy Calamari"><div class="card-image-wrapper"><img src="assets/images/calamari.jpg" alt="Calamari" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Crispy Fried Calamari</h3><span class="price">₵65.00</span></div><p>Tender squid rings lightly battered and fried, served with lemon garlic aioli.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Loaded Nachos"><div class="card-image-wrapper"><img src="assets/images/nachos.jpg" alt="Nachos" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Loaded Cheese Nachos</h3><span class="price">₵55.00</span></div><p>Tortilla chips topped with melted cheese, jalapenos, salsa, and guacamole.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Chicken Shawarma Wrap"><div class="card-image-wrapper"><img src="assets/images/shawarma.jpg" alt="Shawarma" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Chicken Shawarma Wrap</h3><span class="price">₵45.00</span></div><p>Spiced marinated chicken rolled in pita bread with garlic sauce and vegetables.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Greek Salad"><div class="card-image-wrapper"><img src="assets/images/greek_salad.jpg" alt="Greek Salad" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Authentic Greek Salad</h3><span class="price">₵40.00</span></div><p>Cucumbers, tomatoes, red onions, olives, and feta cheese cubes in olive oil.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="T-Bone Steak"><div class="card-image-wrapper"><img src="assets/images/tbone.jpg" alt="T-Bone" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Sizzling T-Bone Steak</h3><span class="price">₵130.00</span></div><p>Prime cut flame-grilled t-bone steak served with mashed potatoes and gravy.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Shrimp Scampi"><div class="card-image-wrapper"><img src="assets/images/shrimp_scampi.jpg" alt="Scampi" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Garlic Butter Shrimp Scampi</h3><span class="price">₵95.00</span></div><p>Juicy prawns sautéed in garlic white wine butter sauce over linguine.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Pesto Pasta"><div class="card-image-wrapper"><img src="assets/images/pesto_pasta.jpg" alt="Pesto" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Basil Pesto Pasta</h3><span class="price">₵65.00</span></div><p>Penne pasta tossed in vibrant fresh basil pesto, pine nuts, and parmesan.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="BBQ Chicken Pizza"><div class="card-image-wrapper"><img src="assets/images/bbq_pizza.jpg" alt="BBQ Pizza" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>BBQ Chicken Pizza</h3><span class="price">₵80.00</span></div><p>Grilled chicken chunks, barbecue drizzle, red onions, and melted mozzarella.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="Vegetable Stir Fry Noodles"><div class="card-image-wrapper"><img src="assets/images/stir_fry.jpg" alt="Stir Fry" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>Veggie Stir Fry Noodles</h3><span class="price">₵50.00</span></div><p>Wok noodles tossed with crisp snap peas, carrots, bell peppers, and soy sauce.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+                    <div class="card animate-fade-in" data-name="French Onion Soup"><div class="card-image-wrapper"><img src="assets/images/onion_soup.jpg" alt="Soup" class="food-img"></div><div class="card-body"><div class="card-header-flex"><h3>French Onion Soup</h3><span class="price">₵45.00</span></div><p>Caramelized onion broth topped with a toasted baguette slice and melted gruyere.</p><button class="btn card-btn add-to-cart">Add to Cart</button></div></div>
+
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <h2>Pelma's<span>_Cuisine</span></h2>
+            <p>© 2026 Pelma's Cuisine. All Rights Reserved. Masterpiece Student Project.</p>
+        </div>
+    </footer>
+
+    <script>
+        // 1. Toggle Switch Logic between Local and Continental
+        const tabs = document.querySelectorAll('.toggle-tab');
+        const localSection = document.getElementById('localSection');
+        const continentalSection = document.getElementById('continentalSection');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+
+                const target = tab.getAttribute('data-category');
+                if (target === 'local') {
+                    localSection.classList.add('active-category');
+                    continentalSection.classList.remove('active-category');
+                } else {
+                    continentalSection.classList.add('active-category');
+                    localSection.classList.remove('active-category');
+                }
+            });
+        });
+
+        // 2. Real-time Search Filter Logic across visible items
+        const searchInput = document.getElementById('menuSearch');
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase();
+            const activeCategoryContent = document.querySelector('.menu-category-content.active-category');
+            const cards = activeCategoryContent.querySelectorAll('.card');
+
+            cards.forEach(card => {
+                const dishName = card.getAttribute('data-name').toLowerCase();
+                if (dishName.includes(query)) {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+
+        // 3. Persistent LocalStorage Cart Management & Badge Sync
+        const cartBadge = document.getElementById('cartCount');
+
+        function updateCartBadge() {
+            const cart = JSON.parse(localStorage.getItem("pelma_cart")) || [];
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartBadge.textContent = `(${totalCount})`;
+        }
+        
+        // Initialize badge count on page load
+        updateCartBadge();
+
+        const addButtons = document.querySelectorAll('.add-to-cart');
+        addButtons.forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const card = e.target.closest('.card');
+                const name = card.getAttribute('data-name');
+                const priceText = card.querySelector('.price').textContent;
+                const price = parseFloat(priceText.replace('₵', '').trim());
+
+                // Read existing cart from localStorage or initialize empty array
+                let cart = JSON.parse(localStorage.getItem("pelma_cart")) || [];
+
+                // Check if item already exists
+                const existingItem = cart.find(item => item.name === name);
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cart.push({ name, price, quantity: 1 });
+                }
+
+                // Save back to localStorage
+                localStorage.setItem("pelma_cart", JSON.stringify(cart));
+
+                // Update UI badge counter instantly
+                updateCartBadge();
+
+                // Visual button feedback
+                btn.textContent = "Added ✓";
+                btn.style.backgroundColor = "#28a745";
+                setTimeout(() => {
+                    btn.textContent = "Add to Cart";
+                    btn.style.backgroundColor = "";
+                }, 1000);
+            });
+        });
+    </script>
+</body>
+</html>

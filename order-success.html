@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Successful - Pelma's Cuisine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .success-container {
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+        .success-card {
+            background: #ffffff;
+            max-width: 550px;
+            width: 100%;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+        .success-icon {
+            font-size: 4rem;
+            color: #10b981;
+            margin-bottom: 20px;
+        }
+        .success-card h1 {
+            font-size: 24px;
+            color: #1e293b;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        .success-card p {
+            color: #64748b;
+            font-size: 15px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        .ref-box {
+            background: #f8fafc;
+            border: 1px dashed #cbd5e1;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 14px;
+            color: #334155;
+            margin-bottom: 30px;
+        }
+        .ref-box span {
+            font-weight: 600;
+            color: #0f172a;
+        }
+        .success-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .btn-primary-custom, 
+        .btn-secondary-custom {
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            display: inline-block;
+        }
+        .btn-primary-custom {
+            background-color: #ef4444;
+            color: #ffffff;
+        }
+        .btn-primary-custom:hover {
+            background-color: #dc2626;
+        }
+        .btn-secondary-custom {
+            background-color: #f1f5f9;
+            color: #334155;
+        }
+        .btn-secondary-custom:hover {
+            background-color: #e2e8f0;
+        }
+    </style>
+</head>
+<body>
+
+    <main class="success-container">
+        <div class="success-card">
+            <div class="success-icon">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h1>Order Placed Successfully!</h1>
+            <p>Thank you for your order with Pelma's Cuisine. Your payment has been verified and your order has been sent straight to the kitchen queue.</p>
+            
+            <div class="ref-box">
+                Transaction Reference: <span id="order-ref-text">Loading...</span>
+            </div>
+
+            <div class="success-actions">
+                <a href="index.html" class="btn-secondary-custom">Back to Home</a>
+                <a href="track-order.html" id="track-btn" class="btn-primary-custom">Track Delivery</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Extract transaction reference from the URL query string
+        const urlParams = new URLSearchParams(window.location.search);
+        const ref = urlParams.get('ref');
+        
+        if (ref) {
+            document.getElementById('order-ref-text').textContent = ref;
+            document.getElementById('track-btn').href = `track-order.html?ref=${ref}`;
+        } else {
+            const fallbackRef = 'PELMA_' + Math.floor(100000 + Math.random() * 900000);
+            document.getElementById('order-ref-text').textContent = fallbackRef;
+            document.getElementById('track-btn').href = `track-order.html?ref=${fallbackRef}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Portal - Pelma's Cuisine</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Brand & Dashboard Styles -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/staff.css">
+</head>
+<body class="restaurant-os-body">
+
+    <!-- App Container -->
+    <div class="app-layout">
+        
+        <!-- Left Sidebar Navigation for Staff Portal -->
+        <aside class="os-sidebar">
+            <div class="sidebar-brand">
+                <h2>Pelma's Cuisine</h2>
+                <span class="user-role-badge">Staff Portal</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Live Dashboard</a>
+                <a href="kitchen.html" class="nav-item"><i class="fa-solid fa-utensils"></i> Kitchen Queue</a>
+                <a href="tables.html" class="nav-item"><i class="fa-solid fa-chair"></i> Floor / Tables</a>
+                <a href="takeout.html" class="nav-item"><i class="fa-solid fa-bag-shopping"></i> Takeout / Delivery</a>
+                <a href="receipts.html" class="nav-item"><i class="fa-solid fa-receipt"></i> Shift Receipts</a>
+                <a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> Portal Settings</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button onclick="handleStaffLogout()" class="btn-shift-report"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="os-main">
+            <!-- Top Navbar Header -->
+            <header class="os-topbar">
+                <div class="os-brand-title">
+                    <h1>Staff Portal <span class="os-version-tag">Live Feed</span></h1>
+                </div>
+
+                <!-- Station Filter Buttons -->
+                <div class="station-filters">
+                    <button class="filter-btn active" onclick="filterStation('ALL')">ALL STATIONS</button>
+                    <button class="filter-btn" onclick="filterStation('Grill')">Grill</button>
+                    <button class="filter-btn" onclick="filterStation('Prep')">Prep</button>
+                    <button class="filter-btn" onclick="filterStation('Bar')">Bar</button>
+                </div>
+
+                <div class="os-topbar-right">
+                    <button class="icon-btn"><i class="fa-solid fa-bell"></i><span class="notification-dot"></span></button>
+                    <button class="icon-btn"><i class="fa-solid fa-circle-question"></i></button>
+                    <div class="user-avatar-badge"><i class="fa-solid fa-user"></i></div>
+                </div>
+            </header>
+
+            <!-- Metrics Summary Cards -->
+            <section class="os-metrics-grid">
+                <div class="os-metric-card">
+                    <span class="metric-label">ACTIVE TICKETS</span>
+                    <h3 id="count-active">0</h3>
+                </div>
+                <div class="os-metric-card">
+                    <span class="metric-label">AVG. PREP TIME</span>
+                    <h3>0m 00s</h3>
+                </div>
+                <div class="os-metric-card alert-card">
+                    <span class="metric-label">OVERDUE (15M+)</span>
+                    <h3 class="text-danger" id="count-overdue">00</h3>
+                </div>
+                <div class="os-metric-card">
+                    <span class="metric-label">ONLINE ORDERS</span>
+                    <h3>Active</h3>
+                </div>
+            </section>
+
+            <!-- Dynamic Tickets Kanban Grid -->
+            <section class="os-tickets-section">
+                <div id="staff-orders-grid" class="os-tickets-grid">
+                    <div class="os-empty-state">
+                        <i class="fa-solid fa-clipboard-list"></i>
+                        <p>No active table orders or reservations at the moment.</p>
+                        <span>New orders from customer tables will stream here automatically.</span>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Script Logic -->
+    <script src="../js/staff.js"></script>
+</body>
+</html>

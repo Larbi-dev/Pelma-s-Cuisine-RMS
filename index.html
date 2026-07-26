@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelma's Cuisine - Order Delicious Meals</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/variables.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <header>
+        <nav class="container flex-between">
+            <div class="logo">
+                <a href="index.html">
+                    <img src="assets/logos/brand-logo.png" alt="Pelma's Cuisine Logo" class="brand-logo">
+                </a>
+            </div>
+
+            <ul class="nav-links flex">
+                <li><a href="#" class="active">Home</a></li>
+                <li><a href="menu.html">Menu</a></li>
+                <li><a href="#features">Why Us</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+
+            <div class="nav-actions flex">
+                <span id="authNavContainer">
+                    <a href="login.html" class="btn btn-outline">Login</a>
+                </span>
+                <a href="menu.html" class="btn">Order Now</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-container">
+            <div class="hero-content">
+                <span class="hero-badge">30-Minute Fast Delivery</span>
+                <h1>
+                    Crafted With Passion, <br>
+                    <span>Served To Perfection</span>
+                </h1>
+                <p>
+                    Experience the ultimate taste sensation at Pelma's Cuisine. 
+                    Fresh ingredients, master chefs, and food delivered straight to your door.
+                </p>
+                <div class="hero-btns flex">
+                    <a href="menu.html" class="btn">Explore Menu</a>
+                    <a href="book-table.html" class="btn btn-outline-white">Book a Table</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="features-section">
+        <div class="container grid features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3>Lightning Fast</h3>
+                <p>Hot, fresh meals delivered to your doorstep within 30 minutes.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🌿</div>
+                <h3>Fresh Ingredients</h3>
+                <p>Sourced locally every single day for premium flavor quality.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">👨‍🍳</div>
+                <h3>Master Chefs</h3>
+                <p>Cooked with love and expertise by award-winning culinary professionals.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="menu.html">
+        <div class="container">
+            <div class="section-title">
+                <h2>Popular Masterpieces</h2>
+                <p>Choose from our highest-rated customer favorites</p>
+            </div>
+
+            <div class="food-grid grid">
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <span class="food-tag">Best Seller</span>
+                        <img src="assets/images/assorted_jollof.jpg" alt="Assorted Jollof Rice" class="food-img">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-header-flex">
+                            <h3>Jollof Rice</h3>
+                            <span class="price">₵45.00</span>
+                        </div>
+                        <p>Served with tender seasoned chicken, fried plantains, and rich stew.</p>
+                        <button class="btn card-btn">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <span class="food-tag">Chef Choice</span>
+                        <img src="assets/images/fried-rice-special.png" alt="Fried Rice Special" class="food-img">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-header-flex">
+                            <h3>Fried Rice Special</h3>
+                            <span class="price">₵50.00</span>
+                        </div>
+                        <p>Tasty oriental fried rice loaded with fresh vegetables and shrimp.</p>
+                        <button class="btn card-btn">Add to Cart</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-image-wrapper">
+                        <span class="food-tag">Hot & Crispy</span>
+                        <img src="assets/images/deluxe_pizza.jpg" alt="Deluxe Pizza" class="food-img">
+                    </div>
+                    <div class="card-body">
+                        <div class="card-header-flex">
+                            <h3>Deluxe Pizza</h3>
+                            <span class="price">₵75.00</span>
+                        </div>
+                        <p>Freshly baked cheesy crust loaded with savory toppings and herbs.</p>
+                        <button class="btn card-btn">Add to Cart</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container footer-content">
+            <h2>Pelma's<span>_Cuisine</span></h2>
+            <p>© 2026 Pelma's Cuisine. All Rights Reserved. Crafted for Culinary Excellence.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const currentUser = JSON.parse(localStorage.getItem('pelmaUser'));
+            const authNavContainer = document.getElementById('authNavContainer');
+
+            if (currentUser && authNavContainer) {
+                authNavContainer.innerHTML = `
+                    <span style="font-weight: 600; color: inherit; margin-right: 10px;">Hi, ${currentUser.username}</span>
+                    <button onclick="logoutUser()" class="btn btn-outline" style="cursor: pointer;">Logout</button>
+                `;
+            }
+        });
+
+        function logoutUser() {
+            localStorage.removeItem('pelmaUser');
+            localStorage.removeItem('userRole');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

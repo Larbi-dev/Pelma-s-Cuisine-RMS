@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pelma's Cuisine - Sign In / Sign Up</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="auth-body">
+    <div class="auth-container">
+        <div class="auth-brand-side">
+            <div class="brand-content">
+                <img src="assets/logos/login-logo.png" alt="Pelma's Cuisine Logo" class="auth-logo-img">
+            </div>
+        </div>
+
+        <div class="auth-form-side">
+            <div class="form-card">
+                <div class="auth-tabs">
+                    <button id="signInTab" class="tab-btn active" onclick="switchTab('signin')">Sign In</button>
+                    <button id="signUpTab" class="tab-btn" onclick="switchTab('signup')">Sign Up</button>
+                </div>
+
+                <form id="authForm" onsubmit="handleAuth(event)">
+                    <div class="input-group" id="nameGroup" style="display: none;">
+                        <label for="fullName">Full Name</label>
+                        <input type="text" id="fullName" placeholder="Enter your full name">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" required placeholder="Enter your username">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required placeholder="••••••••">
+                    </div>
+
+                    <div class="input-group">
+                        <label for="role">Select Your Role</label>
+                        <select id="role" required>
+                            <option value="customer" selected>Customer (Browse & Order)</option>
+                            <option value="staff">Staff / Waiter</option>
+                            <option value="admin">Admin</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="auth-submit-btn">Sign In to Dashboard</button>
+                </form>
+
+                <div id="formMessage" class="form-message"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>
