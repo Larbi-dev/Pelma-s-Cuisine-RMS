@@ -875,6 +875,39 @@ body.auth-body {
   margin-top: 15px;
   text-align: center;
   font-size: 0.85rem;
+
+/* --- DEFAULT STYLES (Laptop / Desktop View) --- */
+.navbar-links {
+  display: flex; /* Shows full links horizontally on laptops */
+  gap: 20px;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 columns on big screens */
+  gap: 20px;
+}
+
+/* --- MOBILE SCREEN ADAPTATION (Screens 768px wide and below) --- */
+@media screen and (max-width: 768px) {
+  
+  /* 1. Hide the giant desktop menu links on phones */
+  .navbar-links {
+    display: none; 
+  }
+
+  /* 2. Automatically change the food grid to a single column so it fits mobile screens */
+  .menu-grid {
+    grid-template-columns: 1fr; /* Stacks 50 dishes into 1 clean vertical column */
+    padding: 0 10px;
+  }
+
+  /* 3. Adjust giant header text so it doesn't overflow the phone screen */
+  h1 {
+    font-size: 24px; 
+    text-align: center;
+  }
+}
   font-weight: 500;
 }
 
