@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Settings - Pelma's Cuisine</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Brand & Dashboard Styles -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/staff.css">
+    <style>
+        /* Custom Thin & Clean Scrollbar Styling */
+        * {
+            scrollbar-width: thin;
+            scrollbar-color: #1e293b #0b0f19;
+        }
+
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #0b0f19;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #1e293b;
+            border-radius: 10px;
+            transition: background-color 0.2s ease;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: #38bdf8;
+        }
+
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .settings-container {
+            animation: fadeInScale 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            padding: 30px;
+            max-width: 900px;
+        }
+
+        .settings-section-card {
+            background-color: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: all 0.25s ease;
+        }
+
+        .settings-section-card:hover {
+            border-color: #38bdf8;
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.05);
+        }
+
+        .settings-section-card h3 {
+            margin: 0 0 15px 0;
+            color: #ffffff;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid #1e293b;
+            padding-bottom: 12px;
+        }
+
+        .settings-section-card h3 i {
+            color: #38bdf8;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.8rem;
+            color: #94a3b8;
+            font-weight: 600;
+            margin-bottom: 6px;
+            letter-spacing: 0.5px;
+        }
+
+        .form-control {
+            width: 100%;
+            background: #0b0f19;
+            border: 1px solid #1e293b;
+            color: #f3f4f6;
+            padding: 10px 14px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: #38bdf8;
+        }
+
+        .toggle-switch-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px dashed #1e293b;
+        }
+
+        .toggle-switch-row:last-child {
+            border-bottom: none;
+        }
+
+        /* Custom Toggle Switch */
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input { 
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            inset: 0;
+            background-color: #1e293b;
+            transition: .3s;
+            border-radius: 24px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 18px;
+            width: 18px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #2563eb;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(20px);
+        }
+
+        .save-settings-btn {
+            background-color: #2563eb;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: filter 0.2s, transform 0.1s;
+        }
+
+        .save-settings-btn:hover {
+            filter: brightness(1.15);
+        }
+
+        .save-settings-btn:active {
+            transform: scale(0.98);
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .live-pulse {
+            animation: pulseGlow 2s infinite;
+        }
+    </style>
+</head>
+<body class="restaurant-os-body" id="portal-body">
+
+    <!-- App Container -->
+    <div class="app-layout">
+        
+        <!-- Left Sidebar Navigation -->
+        <aside class="os-sidebar" id="portal-sidebar">
+            <div class="sidebar-brand">
+                <a href="dashboard.html">
+                    <img src="../assets/logos/login-logo.png" alt="Pelma's Cuisine Logo" class="login-logo" style="max-height: 90px; width: auto; display: inline-flex; margin-bottom: 5px;">
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Live Dashboard</a>
+                <a href="kitchen.html" class="nav-item"><i class="fa-solid fa-utensils"></i> Kitchen Queue</a>
+                <a href="tables.html" class="nav-item"><i class="fa-solid fa-chair"></i> Floor / Tables</a>
+                <a href="takeout.html" class="nav-item"><i class="fa-solid fa-bag-shopping"></i> Takeout / Delivery</a>
+                <a href="receipts.html" class="nav-item"><i class="fa-solid fa-receipt"></i> Shift Receipts</a>
+                <a href="settings.html" class="nav-item active"><i class="fa-solid fa-gear"></i> Portal Settings</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button onclick="handleStaffLogout()" class="btn-shift-report"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="os-main">
+            <!-- Top Navbar Header -->
+            <header class="os-topbar">
+                <div class="os-brand-title">
+                    <h1>Portal Settings <span class="os-version-tag live-pulse">System Config</span></h1>
+                </div>
+
+                <div class="os-topbar-right">
+                    <button class="icon-btn" title="Notifications"><i class="fa-solid fa-bell"></i><span class="notification-dot"></span></button>
+                    <button class="icon-btn" title="Help"><i class="fa-solid fa-circle-question"></i></button>
+                    <div class="user-avatar-badge"><i class="fa-solid fa-user"></i></div>
+                </div>
+            </header>
+
+            <!-- Settings Content Area -->
+            <div class="settings-container">
+                <!-- General Terminal Settings -->
+                <div class="settings-section-card">
+                    <h3><i class="fa-solid fa-sliders"></i> Terminal & Station Preferences</h3>
+                    <div class="form-group">
+                        <label for="terminal-name">TERMINAL ASSIGNMENT</label>
+                        <input type="text" id="terminal-name" class="form-control" value="Main Counter Terminal #01">
+                    </div>
+                    <div class="form-group">
+                        <label for="default-station">DEFAULT KITCHEN VIEW</label>
+                        <select id="default-station" class="form-control">
+                            <option value="ALL">All Stations (Master Feed)</option>
+                            <option value="Grill">Grill Station</option>
+                            <option value="Prep">Prep Station</option>
+                            <option value="Bar">Bar Station</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Staff PIN & Security Management -->
+                <div class="settings-section-card">
+                    <h3><i class="fa-solid fa-shield-halved"></i> Staff PIN & Security Management</h3>
+                    <div class="form-group">
+                        <label for="terminal-pin">QUICK-ACCESS TERMINAL PIN</label>
+                        <input type="password" id="terminal-pin" class="form-control" value="1234" maxlength="6">
+                    </div>
+                    <div class="form-group">
+                        <label for="session-timeout">AUTO-LOCK TIMEOUT (MINUTES)</label>
+                        <select id="session-timeout" class="form-control">
+                            <option value="5">5 Minutes</option>
+                            <option value="15" selected>15 Minutes</option>
+                            <option value="30">30 Minutes</option>
+                            <option value="0">Never (Always Active)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Tax & Currency Configuration -->
+                <div class="settings-section-card">
+                    <h3><i class="fa-solid fa-coins"></i> Tax & Currency Configuration</h3>
+                    <div class="form-group">
+                        <label for="currency-symbol">CURRENCY SYMBOL</label>
+                        <input type="text" id="currency-symbol" class="form-control" value="₵ (Ghanaian Cedi)">
+                    </div>
+                    <div class="form-group">
+                        <label for="service-tax">DEFAULT SERVICE CHARGE / TAX (%)</label>
+                        <input type="number" id="service-tax" class="form-control" value="0.00" step="0.5">
+                    </div>
+                </div>
+
+                <!-- Receipt Customization -->
+                <div class="settings-section-card">
+                    <h3><i class="fa-solid fa-receipt"></i> Receipt Customization</h3>
+                    <div class="form-group">
+                        <label for="receipt-header">RECEIPT HEADER NOTE</label>
+                        <input type="text" id="receipt-header" class="form-control" value="Pelma's Cuisine - Fresh & Delicious">
+                    </div>
+                    <div class="form-group">
+                        <label for="receipt-footer">RECEIPT FOOTER MESSAGE</label>
+                        <input type="text" id="receipt-footer" class="form-control" value="Thank you for dining with us! Please come again.">
+                    </div>
+                </div>
+
+                <!-- Notifications & Alerts Config -->
+                <div class="settings-section-card">
+                    <h3><i class="fa-solid fa-bell"></i> Audio & Visual Alerts</h3>
+                    <div class="toggle-switch-row">
+                        <div>
+                            <strong style="font-size: 0.95rem; color: #f3f4f6; display: block;">New Order Audio Chime</strong>
+                            <span style="font-size: 0.8rem; color: #94a3b8;">Play an alert sound when a new customer order streams in.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-switch-row" style="margin-top: 15px;">
+                        <div>
+                            <strong style="font-size: 0.95rem; color: #f3f4f6; display: block;">Overdue Ticket Visual Flash</strong>
+                            <span style="font-size: 0.8rem; color: #94a3b8;">Pulse red outline on orders exceeding 15 minutes preparation time.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Printer & Hardware Integration -->
+                <div class="settings-section-card">
+                    <h3><i class="fa-solid fa-print"></i> Thermal Printer & Database Sync</h3>
+                    <div class="form-group">
+                        <label for="printer-ip">RECEIPT PRINTER IP / PORT</label>
+                        <input type="text" id="printer-ip" class="form-control" value="usb://pos-thermal-printer-01">
+                    </div>
+                    <div class="toggle-switch-row" style="margin-top: 10px;">
+                        <div>
+                            <strong style="font-size: 0.95rem; color: #f3f4f6; display: block;">Auto-Print Receipt on Order Completion</strong>
+                            <span style="font-size: 0.8rem; color: #94a3b8;">Send receipt directly to thermal printer when payment is verified.</span>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" checked>
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                    <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center; background: #0b0f19; padding: 12px; border-radius: 6px; border: 1px solid #1e293b;">
+                        <div>
+                            <strong style="font-size: 0.85rem; color: #38bdf8; display: block;"><i class="fa-solid fa-cloud"></i> Cloud Synchronization Status</strong>
+                            <span style="font-size: 0.75rem; color: #94a3b8;">Connected to live database. Last synced: Just now.</span>
+                        </div>
+                        <button onclick="forceSync()" style="background: #1e293b; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; cursor: pointer;"><i class="fa-solid fa-rotate"></i> Force Sync</button>
+                    </div>
+                </div>
+
+                <!-- Save Actions -->
+                <div style="display: flex; justify-content: flex-end; gap: 15px;">
+                    <button onclick="resetSettings()" style="background: transparent; border: 1px solid #1e293b; color: #94a3b8; padding: 12px 20px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.9rem;">Reset Defaults</button>
+                    <button onclick="saveSettings()" class="save-settings-btn"><i class="fa-solid fa-floppy-disk"></i> Save Configuration</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Script Logic -->
+    <script>
+        function saveSettings() {
+            alert("Configuration settings updated successfully across the active terminal session!");
+        }
+
+        function resetSettings() {
+            if(confirm("Are you sure you want to revert all terminal settings back to default?")) {
+                alert("Settings reset to factory defaults.");
+            }
+        }
+
+        function forceSync() {
+            alert("Manual cloud synchronization completed successfully!");
+        }
+
+        function handleStaffLogout() {
+            if(confirm('Are you sure you want to log out of the staff portal?')) {
+                window.location.href = 'dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>

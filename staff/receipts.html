@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shift Receipts - Pelma's Cuisine</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Brand & Dashboard Styles -->
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/staff.css">
+    <style>
+        /* Interactive & Animation Extensions for Shift Receipts */
+        @keyframes fadeInScale {
+            from { opacity: 0; transform: scale(0.97); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .receipts-container {
+            animation: fadeInScale 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .receipt-card {
+            transition: all 0.25s ease;
+        }
+
+        .receipt-card:hover {
+            transform: translateY(-2px);
+            border-color: #38bdf8;
+            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.1);
+        }
+
+        .interactive-tab {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .interactive-tab::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #38bdf8;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+
+        .interactive-tab.active::after, .interactive-tab:hover::after {
+            width: 100%;
+        }
+
+        /* Modal Overlay Animation */
+        .receipt-modal-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(11, 15, 25, 0.8);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .receipt-modal-backdrop.open {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .receipt-modal-content {
+            background: #111827;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 480px;
+            padding: 30px;
+            transform: translateY(20px);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+        }
+
+        .receipt-modal-backdrop.open .receipt-modal-content {
+            transform: translateY(0);
+        }
+
+        /* Pulse animation for live sync */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .live-pulse {
+            animation: pulseGlow 2s infinite;
+        }
+    </style>
+</head>
+<body class="restaurant-os-body">
+
+    <!-- App Container -->
+    <div class="app-layout">
+        
+        <!-- Left Sidebar Navigation -->
+        <aside class="os-sidebar">
+            <div class="sidebar-brand">
+                <span class="user-role-badge">Staff Portal</span>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Live Dashboard</a>
+                <a href="kitchen.html" class="nav-item"><i class="fa-solid fa-utensils"></i> Kitchen Queue</a>
+                <a href="tables.html" class="nav-item"><i class="fa-solid fa-chair"></i> Floor / Tables</a>
+                <a href="takeout.html" class="nav-item"><i class="fa-solid fa-bag-shopping"></i> Takeout / Delivery</a>
+                <a href="receipts.html" class="nav-item active"><i class="fa-solid fa-receipt"></i> Shift Receipts</a>
+                <a href="settings.html" class="nav-item"><i class="fa-solid fa-gear"></i> Portal Settings</a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <button onclick="handleStaffLogout()" class="btn-shift-report"><i class="fa-solid fa-right-from-bracket"></i> Logout</button>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="os-main">
+            <!-- Top Navbar Header -->
+            <header class="os-topbar">
+                <div class="os-brand-title">
+                    <h1>Shift Receipts <span class="os-version-tag live-pulse">Ledger Active</span></h1>
+                </div>
+
+                <!-- Receipt View Filter Tabs -->
+                <div class="station-filters">
+                    <button class="filter-btn active interactive-tab" onclick="filterReceipts('ALL')">ALL TRANSACTIONS</button>
+                    <button class="filter-btn interactive-tab" onclick="filterReceipts('Dine-In')">Dine-In</button>
+                    <button class="filter-btn interactive-tab" onclick="filterReceipts('Takeout')">Takeout</button>
+                    <button class="filter-btn interactive-tab" onclick="filterReceipts('Delivery')">Delivery</button>
+                </div>
+
+                <div class="os-topbar-right">
+                    <button class="icon-btn" title="Notifications"><i class="fa-solid fa-bell"></i><span class="notification-dot"></span></button>
+                    <button class="icon-btn" title="Help"><i class="fa-solid fa-circle-question"></i></button>
+                    <div class="user-avatar-badge"><i class="fa-solid fa-user"></i></div>
+                </div>
+            </header>
+
+            <!-- Financial Metrics Summary Cards -->
+            <section class="os-metrics-grid">
+                <div class="os-metric-card">
+                    <span class="metric-label">TOTAL SHIFT REVENUE</span>
+                    <h3 id="metric-revenue" class="text-accent">₵14.25</h3>
+                </div>
+                <div class="os-metric-card">
+                    <span class="metric-label">CASH COLLECTED</span>
+                    <h3 id="metric-cash">₵0.00</h3>
+                </div>
+                <div class="os-metric-card">
+                    <span class="metric-label">DIGITAL / MOMO</span>
+                    <h3 id="metric-digital" class="text-accent">₵14.25</h3>
+                </div>
+                <div class="os-metric-card alert-card">
+                    <span class="metric-label">COMPLETED ORDERS</span>
+                    <h3 id="metric-count">1</h3>
+                </div>
+            </section>
+
+            <!-- Receipts Content Area -->
+            <section class="os-tickets-section receipts-container">
+                <!-- Action Control Bar -->
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <input type="text" id="receipt-search" placeholder="Search receipt ID or server..." style="background: #111827; border: 1px solid #1e293b; color: #fff; padding: 8px 14px; border-radius: 6px; font-size: 0.85rem; width: 240px; outline: none;" onkeyup="searchReceipts()">
+                    </div>
+                    <div style="display: flex; gap: 10px;">
+                        <button onclick="printShiftReport()" style="background-color: #2563eb; color: #fff; border: none; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: filter 0.2s;"><i class="fa-solid fa-print"></i> Print Report</button>
+                        <button onclick="reconcileDrawer()" style="background-color: transparent; border: 1px solid #38bdf8; color: #38bdf8; padding: 8px 16px; border-radius: 6px; font-weight: 600; cursor: pointer; font-size: 0.85rem; transition: all 0.2s;"><i class="fa-solid fa-vault"></i> Reconcile Drawer</button>
+                    </div>
+                </div>
+
+                <!-- Transaction Cards Grid -->
+                <div id="receipts-grid" class="os-tickets-grid">
+                    <!-- Receipt Card 1 -->
+                    <div class="os-ticket-card receipt-card" data-category="Dine-In" data-id="REC-1001" data-server="Frank">
+                        <div class="os-ticket-header">
+                            <div>
+                                <h4>REC-1001 <span style="font-size: 0.75rem; color: #38bdf8; margin-left: 6px;">[Dine-In]</span></h4>
+                                <span style="font-size: 0.75rem; color: #94a3b8;">Server: Frank | Table #01</span>
+                            </div>
+                            <div class="os-ticket-timer-box">
+                                <span class="ticket-time">11:32 AM</span>
+                                <span class="status-tag cooking" style="background-color: #10b981;">PAID</span>
+                            </div>
+                        </div>
+                        <ul class="os-ticket-items">
+                            <li><span>1x BBQ Burger</span> <strong>₵11.00</strong></li>
+                            <li><span>1x Onion Rings</span> <strong>₵3.25</strong></li>
+                        </ul>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 0.9rem;">
+                            <span style="color: #94a3b8;">Payment: <strong style="color: #f3f4f6;">MoMo / Digital</strong></span>
+                            <span style="font-size: 1.1rem; font-weight: 700; color: #38bdf8;">Total: ₵14.25</span>
+                        </div>
+                        <div class="os-ticket-actions">
+                            <button class="os-btn-action os-btn-start" onclick="openReceiptModal('REC-1001', 'Dine-In', 'Frank', '11:32 AM', 'MoMo / Digital', '14.25', '1x BBQ Burger (₵11.00), 1x Onion Rings (₵3.25)')"><i class="fa-solid fa-eye"></i> View Details</button>
+                            <button class="os-btn-action os-btn-ready" onclick="printSingleReceipt('REC-1001')"><i class="fa-solid fa-print"></i> Reprint</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Receipt Details Modal -->
+    <div id="receiptModal" class="receipt-modal-backdrop" onclick="closeReceiptModal(event)">
+        <div class="receipt-modal-content" onclick="event.stopPropagation()">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 12px; margin-bottom: 15px;">
+                <h3 id="modal-title" style="margin: 0; color: #fff; font-size: 1.1rem;">Receipt Breakdown</h3>
+                <button onclick="closeReceiptModalDirect()" style="background: transparent; border: none; color: #94a3b8; font-size: 1.2rem; cursor: pointer;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="modal-body" style="font-size: 0.9rem; color: #e2e8f0; display: flex; flex-direction: column; gap: 10px;">
+                <!-- Populated dynamically -->
+            </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button onclick="printSingleReceipt(currentModalId)" class="os-btn-action os-btn-start"><i class="fa-solid fa-print"></i> Print Official Receipt</button>
+                <button onclick="closeReceiptModalDirect()" style="background: #1e293b; color: #fff; border: none; border-radius: 6px; padding: 10px; font-weight: 600; cursor: pointer; flex: 1;">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script Logic for Interactions & Animations -->
+    <script>
+        let currentModalId = '';
+
+        function filterReceipts(category) {
+            // Update active state on filter buttons
+            const buttons = document.querySelectorAll('.station-filters .filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            const cards = document.querySelectorAll('.receipt-card');
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                if (category === 'ALL' || cardCat === category) {
+                    card.style.display = 'flex';
+                    card.style.animation = 'fadeInScale 0.3s ease forwards';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function searchReceipts() {
+            const query = document.getElementById('receipt-search').value.toLowerCase();
+            const cards = document.querySelectorAll('.receipt-card');
+            cards.forEach(card => {
+                const id = card.getAttribute('data-id').toLowerCase();
+                const server = card.getAttribute('data-server').toLowerCase();
+                if (id.includes(query) || server.includes(query)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function openReceiptModal(id, type, server, time, payment, total, items) {
+            currentModalId = id;
+            document.getElementById('modal-title').innerText = `Transaction Details: ${id}`;
+            document.getElementById('modal-body').innerHTML = `
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #1e293b; padding-bottom: 8px;">
+                    <span style="color: #94a3b8;">Order Type:</span>
+                    <strong>${type}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #1e293b; padding-bottom: 8px;">
+                    <span style="color: #94a3b8;">Staff / Server:</span>
+                    <strong>${server}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #1e293b; padding-bottom: 8px;">
+                    <span style="color: #94a3b8;">Timestamp:</span>
+                    <strong>${time}</strong>
+                </div>
+                <div style="display: flex; justify-content: space-between; border-bottom: 1px dashed #1e293b; padding-bottom: 8px;">
+                    <span style="color: #94a3b8;">Payment Method:</span>
+                    <strong style="color: #38bdf8;">${payment}</strong>
+                </div>
+                <div style="margin-top: 5px;">
+                    <span style="color: #94a3b8; display: block; margin-bottom: 5px;">Ordered Items:</span>
+                    <div style="background: #0b0f19; padding: 10px; border-radius: 6px; border: 1px solid #1e293b;">${items}</div>
+                </div>
+                <div style="display: flex; justify-content: space-between; margin-top: 10px; font-size: 1.1rem; font-weight: 700;">
+                    <span>Total Amount:</span>
+                    <span style="color: #38bdf8;">₵${total}</span>
+                </div>
+            `;
+            document.getElementById('receiptModal').classList.add('open');
+        }
+
+        function closeReceiptModal(event) {
+            document.getElementById('receiptModal').classList.remove('open');
+        }
+
+        function closeReceiptModalDirect() {
+            document.getElementById('receiptModal').classList.remove('open');
+        }
+
+        function printShiftReport() {
+            alert("Generating official Shift Financial Report PDF...");
+        }
+
+        function reconcileDrawer() {
+            alert("Initiating cash drawer reconciliation wizard...");
+        }
+
+        function printSingleReceipt(id) {
+            alert(`Sending reprint command for receipt ${id} to kitchen thermal printer...`);
+        }
+
+        function handleStaffLogout() {
+            if(confirm('Are you sure you want to log out of the staff portal?')) {
+                window.location.href = 'dashboard.html';
+            }
+        }
+    </script>
+</body>
+</html>
