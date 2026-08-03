@@ -203,7 +203,6 @@
 
             <nav class="sidebar-nav">
                 <a href="dashboard.html" class="nav-item"><i class="fa-solid fa-chart-pie"></i> Live Dashboard</a>
-                <a href="kitchen.html" class="nav-item"><i class="fa-solid fa-utensils"></i> Kitchen Queue</a>
                 <a href="tables.html" class="nav-item"><i class="fa-solid fa-chair"></i> Floor / Tables</a>
                 <a href="takeout.html" class="nav-item"><i class="fa-solid fa-bag-shopping"></i> Takeout / Delivery</a>
                 <a href="receipts.html" class="nav-item"><i class="fa-solid fa-receipt"></i> Shift Receipts</a>
@@ -303,7 +302,7 @@
                             <span style="font-size: 0.8rem; color: #94a3b8;">Play an alert sound when a new customer order streams in.</span>
                         </div>
                         <label class="switch">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" id="alert-chime" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -313,7 +312,7 @@
                             <span style="font-size: 0.8rem; color: #94a3b8;">Pulse red outline on orders exceeding 15 minutes preparation time.</span>
                         </div>
                         <label class="switch">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" id="alert-flash" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
@@ -332,14 +331,14 @@
                             <span style="font-size: 0.8rem; color: #94a3b8;">Send receipt directly to thermal printer when payment is verified.</span>
                         </div>
                         <label class="switch">
-                            <input type="checkbox" checked>
+                            <input type="checkbox" id="auto-print" checked>
                             <span class="slider"></span>
                         </label>
                     </div>
                     <div style="margin-top: 15px; display: flex; justify-content: space-between; align-items: center; background: #0b0f19; padding: 12px; border-radius: 6px; border: 1px solid #1e293b;">
                         <div>
                             <strong style="font-size: 0.85rem; color: #38bdf8; display: block;"><i class="fa-solid fa-cloud"></i> Cloud Synchronization Status</strong>
-                            <span style="font-size: 0.75rem; color: #94a3b8;">Connected to live database. Last synced: Just now.</span>
+                            <span style="font-size: 0.75rem; color: #94a3b8;" id="sync-status-text">Connected to live database. Last synced: Just now.</span>
                         </div>
                         <button onclick="forceSync()" style="background: #1e293b; color: #fff; border: none; padding: 6px 12px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; cursor: pointer;"><i class="fa-solid fa-rotate"></i> Force Sync</button>
                     </div>
@@ -354,19 +353,60 @@
         </main>
     </div>
 
-    <!-- Script Logic -->
+    <!-- Script Logic with LocalStorage Integration -->
     <script>
+        // Load saved settings on page startup
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedConfig = localStorage.getItem('pelma_terminal_settings');
+            if (savedConfig) {
+                const config = JSON.parse(savedConfig);
+                if (config.terminalName !== undefined) document.getElementById('terminal-name').value = config.terminalName;
+                if (config.defaultStation !== undefined) document.getElementById('default-station').value = config.defaultStation;
+                if (config.terminalPin !== undefined) document.getElementById('terminal-pin').value = config.terminalPin;
+                if (config.sessionTimeout !== undefined) document.getElementById('session-timeout').value = config.sessionTimeout;
+                if (config.currencySymbol !== undefined) document.getElementById('currency-symbol').value = config.currencySymbol;
+                if (config.serviceTax !== undefined) document.getElementById('service-tax').value = config.serviceTax;
+                if (config.receiptHeader !== undefined) document.getElementById('receipt-header').value = config.receiptHeader;
+                if (config.receiptFooter !== undefined) document.getElementById('receipt-footer').value = config.receiptFooter;
+                if (config.alertChime !== undefined) document.getElementById('alert-chime').checked = config.alertChime;
+                if (config.alertFlash !== undefined) document.getElementById('alert-flash').checked = config.alertFlash;
+                if (config.printerIp !== undefined) document.getElementById('printer-ip').value = config.printerIp;
+                if (config.autoPrint !== undefined) document.getElementById('auto-print').checked = config.autoPrint;
+            }
+        });
+
         function saveSettings() {
+            const settingsData = {
+                terminalName: document.getElementById('terminal-name').value,
+                defaultStation: document.getElementById('default-station').value,
+                terminalPin: document.getElementById('terminal-pin').value,
+                sessionTimeout: document.getElementById('session-timeout').value,
+                currencySymbol: document.getElementById('currency-symbol').value,
+                serviceTax: document.getElementById('service-tax').value,
+                receiptHeader: document.getElementById('receipt-header').value,
+                receiptFooter: document.getElementById('receipt-footer').value,
+                alertChime: document.getElementById('alert-chime').checked,
+                alertFlash: document.getElementById('alert-flash').checked,
+                printerIp: document.getElementById('printer-ip').value,
+                autoPrint: document.getElementById('auto-print').checked,
+                lastUpdated: new Date().toISOString()
+            };
+
+            // Save to localStorage for persistence across the system
+            localStorage.setItem('pelma_terminal_settings', JSON.stringify(settingsData));
             alert("Configuration settings updated successfully across the active terminal session!");
         }
 
         function resetSettings() {
             if(confirm("Are you sure you want to revert all terminal settings back to default?")) {
+                localStorage.removeItem('pelma_terminal_settings');
                 alert("Settings reset to factory defaults.");
+                location.reload();
             }
         }
 
         function forceSync() {
+            document.getElementById('sync-status-text').innerText = `Connected to live database. Last synced: ${new Date().toLocaleTimeString()}`;
             alert("Manual cloud synchronization completed successfully!");
         }
 
@@ -376,5 +416,6 @@
             }
         }
     </script>
+    <script src="../js/portal-config.js"></script>
 </body>
 </html>
