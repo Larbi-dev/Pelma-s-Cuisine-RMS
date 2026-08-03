@@ -7,6 +7,7 @@ function loadLiveOrders() {
     
     let orders = [];
     try {
+        // Updated to read from the unified storage key used during checkout
         orders = JSON.parse(localStorage.getItem("pelmaLiveOrders")) || [];
     } catch (e) {
         orders = [];
@@ -18,8 +19,8 @@ function loadLiveOrders() {
         ordersGrid.innerHTML = `
             <div class="os-empty-state">
                 <i class="fa-solid fa-clipboard-list"></i>
-                <p>No active table orders or reservations at the moment.</p>
-                <span>New orders from customer tables will stream here automatically.</span>
+                <p>No active online orders at the moment.</p>
+                <span>New orders from customers will stream here automatically.</span>
             </div>
         `;
         return;
@@ -41,8 +42,8 @@ function loadLiveOrders() {
         card.innerHTML = `
             <div class="os-ticket-header">
                 <div>
-                    <h4>Table #${order.tableNumber || '01'}</h4>
-                    <span>Server: ${order.customerName || 'Customer'}</span>
+                    <h4>Order #${order.id || '01'}</h4>
+                    <span>Customer: ${order.customerName || 'Guest'}</span>
                 </div>
                 <div class="os-ticket-timer-box">
                     <span class="ticket-time">Live</span>
@@ -50,7 +51,7 @@ function loadLiveOrders() {
                 </div>
             </div>
             <ul class="os-ticket-items">
-                ${itemsHtml || '<li><span>Table Reservation Request</span></li>'}
+                ${itemsHtml || '<li><span>Custom Order Request</span></li>'}
             </ul>
             <div class="os-ticket-actions">
                 <button onclick="updateOrderStatus(${index}, 'Preparing')" class="os-btn-action os-btn-start">Start</button>
@@ -86,4 +87,3 @@ function handleStaffLogout() {
     localStorage.removeItem("pelmaUser");
     window.location.href = "../login.html";
 }
-

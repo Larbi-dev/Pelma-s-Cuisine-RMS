@@ -13,8 +13,12 @@ function loadFloorTables(zoneFilter = 'ALL') {
         liveOrders = [];
     }
 
-    // Filter for dine-in / table orders
-    let tableOrders = liveOrders.filter(o => o.tableNumber || o.type === 'Dine-In');
+    // Show active orders on the floor (maps table number or falls back to index/ID for online orders)
+    let tableOrders = liveOrders.map((order, idx) => ({
+        ...order,
+        tableNumber: order.tableNumber || `Online #${order.id ? order.id.slice(-4) : (idx + 1)}`,
+        serverName: order.serverName || 'Larbi'
+    }));
 
     if (zoneFilter !== 'ALL') {
         tableOrders = tableOrders.filter(o => (o.zone || 'Main Hall') === zoneFilter);
@@ -23,13 +27,13 @@ function loadFloorTables(zoneFilter = 'ALL') {
     // Update Metrics
     document.getElementById("count-total-tables").textContent = tableOrders.length;
     document.getElementById("count-occupied").textContent = tableOrders.filter(o => o.status !== 'Completed').length;
-    document.getElementById("count-available").textContent = tableOrders.length === 0 ? "8" : "0"; // Dynamic based on active sessions
+    document.getElementById("count-available").textContent = tableOrders.length === 0 ? "8" : "0"; 
 
     if (tableOrders.length === 0) {
         grid.innerHTML = `
             <div class="os-empty-state">
                 <i class="fa-solid fa-chair"></i>
-                <p>No active dine-in table orders on the floor.</p>
+                <p>No active table orders on the floor.</p>
                 <span>Active customer table reservations and orders will appear here automatically.</span>
             </div>
         `;
@@ -52,8 +56,8 @@ function loadFloorTables(zoneFilter = 'ALL') {
         card.innerHTML = `
             <div class="os-ticket-header">
                 <div>
-                    <h4>Table #${order.tableNumber || (index + 1)}</h4>
-                    <span>Server: ${order.serverName || 'Larbi'}</span>
+                    <h4>Table #${order.tableNumber}</h4>
+                    <span>Server: ${order.serverName}</span>
                 </div>
                 <div class="os-ticket-timer-box">
                     <span class="status-tag cooking">${order.status || 'ACTIVE'}</span>

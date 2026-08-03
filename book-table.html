@@ -366,7 +366,6 @@
 
                     <!-- Visual Table Grid -->
                     <div class="tables-map-grid" id="tablesMapGrid">
-                        <!-- Dynamically generated or static layout of tables with table numbers -->
                         <div class="table-node available" onclick="selectTable(this, 'Table 01')">Table 01<span>2 Seats</span></div>
                         <div class="table-node available" onclick="selectTable(this, 'Table 02')">Table 02<span>2 Seats</span></div>
                         <div class="table-node booked">Table 03<span>4 Seats</span></div>
@@ -438,7 +437,6 @@
         }
 
         function selectTable(element, tableLabel) {
-            // Prevent selecting booked tables
             if (element.classList.contains('booked')) return;
 
             document.querySelectorAll('.table-node').forEach(node => {
@@ -455,7 +453,34 @@
             e.preventDefault();
             const tableName = document.getElementById('selectedTableNumber').value;
             const clientName = document.getElementById('clientName').value;
-            
+            const clientPhone = document.getElementById('clientPhone').value;
+            const partySize = document.getElementById('partySize').value;
+            const reserveDate = document.getElementById('reserveDate').value;
+            const reserveTime = document.getElementById('reserveTime').value;
+
+            // Format reservation object to match staff portal storage schema
+            const tableReservationOrder = {
+                id: 'RES_' + Math.floor(Math.random() * 1000000),
+                tableNumber: tableName.replace('Table ', ''),
+                serverName: 'Larbi',
+                customerName: clientName,
+                phone: clientPhone,
+                type: 'Dine-In',
+                status: 'Active',
+                zone: 'Main Hall',
+                items: [
+                    { name: `Table Reservation (${partySize} Guests)`, quantity: 1, price: 0.00 }
+                ],
+                total: 0.00,
+                reservationDetails: { date: reserveDate, time: reserveTime }
+            };
+
+            // Sync with localStorage so the staff floor portal catches it instantly
+            let existingOrders = JSON.parse(localStorage.getItem('pelmaLiveOrders')) || [];
+            existingOrders.unshift(tableReservationOrder);
+            localStorage.setItem('pelmaLiveOrders', JSON.stringify(existingOrders));
+
+            // Display confirmation state
             document.getElementById('successDetailsText').innerText = `Thank you, ${clientName}! ${tableName} has been locked in for your visit.`;
             document.getElementById('mainBookingForm').style.display = 'none';
             document.querySelector('.step-indicators').style.display = 'none';
@@ -464,3 +489,4 @@
     </script>
 </body>
 </html>
+```[cite: 5]

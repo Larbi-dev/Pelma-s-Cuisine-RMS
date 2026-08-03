@@ -166,7 +166,7 @@ async function verifyOrderWithBackend(reference, orderData) {
             customerName: orderData.customer.fullName,
             phone: orderData.customer.phone,
             address: orderData.customer.fulfillment === 'pickup' ? 'Pickup Order' : orderData.customer.location,
-            status: 'confirmed',
+            status: 'new', // Sets initial status to match staff portal formatting
             items: orderData.items.map(item => ({
                 name: item.name,
                 quantity: item.quantity || 1,
@@ -176,10 +176,10 @@ async function verifyOrderWithBackend(reference, orderData) {
             total: orderData.total
         };
 
-        // Save into local storage for the staff dashboard live feed
-        let existingOrders = JSON.parse(localStorage.getItem('allOrders')) || [];
+        // Save into local storage using the unified key that staff.js reads from
+        let existingOrders = JSON.parse(localStorage.getItem('pelmaLiveOrders')) || [];
         existingOrders.unshift(staffOrder);
-        localStorage.setItem('allOrders', JSON.stringify(existingOrders));
+        localStorage.setItem('pelmaLiveOrders', JSON.stringify(existingOrders));
 
         const response = await fetch('https://api.yourdomain.com/v1/orders/verify', {
             method: 'POST',
