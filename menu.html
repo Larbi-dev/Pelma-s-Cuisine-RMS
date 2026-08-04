@@ -18,20 +18,23 @@
 
     <header>
         <nav class="container flex-between">
-            <div class="logo">
-                <a href="index.html">
-                    <img src="assets/logos/brand-logo.png" alt="Pelma's Cuisine Logo" class="brand-logo">
-                </a>
+            <div class="logo-mobile-wrapper flex-between">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="assets/logos/brand-logo.png" alt="Pelma's Cuisine Logo" class="brand-logo">
+                    </a>
+                </div>
+                <button id="menuToggleBtn" class="mobile-toggle-btn">☰</button>
             </div>
 
-            <ul class="nav-links flex">
+            <ul class="nav-links flex" id="navLinks">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="menu.html" class="active">Menu</a></li>
                 <li><a href="index.html#features">Why Us</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
 
-            <div class="nav-actions flex">
+            <div class="nav-actions flex" id="navActions">
                 <a href="login.html" class="btn btn-outline">Login</a>
                 <a href="checkout.html" class="btn cart-btn-nav">Cart <span id="cartCount">(0)</span></a>
             </div>
@@ -377,6 +380,19 @@
     </footer>
 
     <script>
+        // 0. Mobile Hamburger Toggle Menu Logic
+        const menuToggleBtn = document.getElementById('menuToggleBtn');
+        const navLinks = document.getElementById('navLinks');
+        const navActions = document.getElementById('navActions');
+
+        if (menuToggleBtn) {
+            menuToggleBtn.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                if (navActions) navActions.classList.toggle('active');
+                menuToggleBtn.textContent = navLinks.classList.contains('active') ? '✕' : '☰';
+            });
+        }
+
         // 1. Toggle Switch Logic across all categories
         const tabs = document.querySelectorAll('.toggle-tab');
         const sections = {

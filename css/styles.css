@@ -283,7 +283,7 @@ header {
 }
 
 /* =========================
-   POPULAR MENU SECTION
+   POPULAR MENU & CATEGORIES SECTION
 ========================= */
 #menu {
     padding: var(--section-padding) 0;
@@ -291,7 +291,7 @@ header {
 
 .section-title {
     text-align: center;
-    margin-bottom: 50px;
+    margin-bottom: 30px;
 }
 
 .section-title h2 {
@@ -304,8 +304,55 @@ header {
     color: var(--text-light);
 }
 
-.food-grid {
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+/* Category Filter Tabs Styling */
+.category-toggle-wrapper {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin: 0 0 40px;
+}
+
+.toggle-tab {
+    background-color: var(--card-bg, #fff);
+    border: 2px solid #ddd;
+    padding: 8px 20px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    color: var(--text-color, #333);
+    box-shadow: var(--shadow-sm);
+}
+
+.toggle-tab:hover {
+    border-color: #C80707;
+    color: #C80707;
+}
+
+.toggle-tab.active {
+    background-color: #C80707;
+    color: var(--white, #fff);
+    border-color: #C80707;
+}
+
+/* Menu Category Handling */
+.menu-category-content {
+    display: none;
+}
+
+.menu-category-content.active-category {
+    display: block;
+}
+
+/* Transform Grid into a List Layout */
+.menu-category-content .food-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 850px;
+    margin: 0 auto;
 }
 
 .card {
@@ -319,13 +366,24 @@ header {
 
 .card:hover {
     box-shadow: var(--shadow-lg);
-    transform: translateY(-5px);
+    transform: translateY(-3px);
 }
 
-.card-image-wrapper {
-    height: 220px;
-    width: 100%;
+/* List Row Structure for Cards */
+.menu-category-content .food-grid .card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 12px;
+    gap: 20px;
+}
+
+.menu-category-content .food-grid .card-image-wrapper {
+    width: 110px;
+    height: 90px;
+    min-width: 110px;
     position: relative;
+    border-radius: 6px;
     overflow: hidden;
     background: #f1f1f1;
 }
@@ -343,48 +401,59 @@ header {
 
 .food-tag {
     position: absolute;
-    top: 15px;
-    left: 15px;
+    top: 6px;
+    left: 6px;
     background-color: #C80707;
     color: var(--white);
-    padding: 5px 12px;
+    padding: 2px 8px;
     border-radius: 4px;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
     font-weight: 600;
     z-index: 10;
     box-shadow: var(--shadow-sm);
 }
 
-.card-body {
-    padding: 25px;
+.menu-category-content .food-grid .card-body {
+    flex-grow: 1;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .card-header-flex {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 4px;
 }
 
 .card-header-flex h3 {
-    font-size: 1.25rem;
+    font-size: 1.1rem;
     color: var(--secondary-color);
 }
 
 .price {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: #C80707;
 }
 
-.card-body p {
+.menu-category-content .food-grid .card-body p {
     color: var(--text-light);
-    font-size: var(--small-size);
-    margin-bottom: 20px;
+    font-size: 0.85rem;
+    margin-bottom: 8px;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .card-btn {
-    width: 100%;
+    width: auto;
+    align-self: flex-start;
+    padding: 6px 16px;
+    font-size: 0.8rem;
     text-align: center;
 }
 
@@ -413,7 +482,7 @@ footer p {
 }
 
 /* ==========================================
-   MOBILE RESPONSIVE MENU WITH ANIMATIONS
+   MOBILE RESPONSIVE STYLES
    ================================---------- */
 @media screen and (max-width: 768px) {
     header nav {
@@ -476,5 +545,23 @@ footer p {
 
     .hero-btns .btn {
         width: 100%;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .menu-category-content .food-grid .card {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+    }
+
+    .menu-category-content .food-grid .card-image-wrapper {
+        width: 100%;
+        height: 160px;
+    }
+
+    .menu-category-content .food-grid .card-btn {
+        width: 100%;
+        text-align: center;
     }
 }
