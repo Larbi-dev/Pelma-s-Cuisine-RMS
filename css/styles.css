@@ -565,3 +565,29 @@ footer p {
         text-align: center;
     }
 }
+
+/* Align and space the search bar and filter buttons nicely */
+.category-toggle-wrapper {
+    margin-bottom: 20px;
+}
+
+/* Style the search input to match your modern design */
+input[type="text"], .search-bar {
+    display: block;
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto 30px auto;
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+    background-color: var(--card-bg, #fff);
+}
+
+input[type="text"]:focus, .search-bar:focus {
+    border-color: #C80707;
+    box-shadow: 0 0 0 3px rgba(200, 7, 7, 0.1);
+}
