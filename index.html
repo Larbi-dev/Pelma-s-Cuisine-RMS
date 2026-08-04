@@ -17,28 +17,32 @@
 <body>
 
     <header>
-        <nav class="container flex-between" style="flex-wrap: wrap; gap: 10px;">
+        <nav class="container flex-between">
             
-            <div class="logo">
-                <a href="index.html">
-                    <img src="assets/logos/brand-logo.png" alt="Pelma's Cuisine Logo" class="brand-logo">
-                </a>
+            <div class="logo-mobile-wrapper">
+                <div class="logo">
+                    <a href="index.html">
+                        <img src="assets/logos/brand-logo.png" alt="Pelma's Cuisine Logo" class="brand-logo">
+                    </a>
+                </div>
+                <!-- Animated Hamburger Toggle Button for Mobile -->
+                <button id="menuToggleBtn" class="mobile-toggle-btn" aria-label="Toggle navigation menu">
+                    <span class="hamburger-icon">☰</span>
+                </button>
             </div>
 
-            <ul class="nav-links flex">
+            <ul class="nav-links flex" id="navLinks">
                 <li><a href="#" class="active">Home</a></li>
                 <li><a href="menu.html">Menu</a></li>
                 <li><a href="#features">Why Us</a></li>
                 <li><a href="contact.html">Contact</a></li>
             </ul>
 
-            
-
-            <div class="nav-actions flex">
+            <div class="nav-actions flex" id="navActions">
                 <span id="authNavContainer">
                     <a href="login.html" class="btn btn-outline">Login</a>
                 </span>
-                <a href="menu.html" class="btn">Order Now</a>
+                <a href="menu.html" class="btn btn-animated">Order Now</a>
             </div>
         </nav>
     </header>
@@ -56,7 +60,7 @@
                     Fresh ingredients, master chefs, and food delivered straight to your door.
                 </p>
                 <div class="hero-btns flex">
-                    <a href="menu.html" class="btn">Explore Menu</a>
+                    <a href="menu.html" class="btn btn-animated">Explore Menu</a>
                     <a href="book-table.html" class="btn btn-outline-white">Book a Table</a>
                 </div>
             </div>
@@ -102,7 +106,7 @@
                             <span class="price">₵45.00</span>
                         </div>
                         <p>Served with tender seasoned chicken, fried plantains, and rich stew.</p>
-                        <button class="btn card-btn">Add to Cart</button>
+                        <button class="btn card-btn btn-animated">Add to Cart</button>
                     </div>
                 </div>
 
@@ -117,7 +121,7 @@
                             <span class="price">₵50.00</span>
                         </div>
                         <p>Tasty oriental fried rice loaded with fresh vegetables and shrimp.</p>
-                        <button class="btn card-btn">Add to Cart</button>
+                        <button class="btn card-btn btn-animated">Add to Cart</button>
                     </div>
                 </div>
 
@@ -132,7 +136,7 @@
                             <span class="price">₵75.00</span>
                         </div>
                         <p>Freshly baked cheesy crust loaded with savory toppings and herbs.</p>
-                        <button class="btn card-btn">Add to Cart</button>
+                        <button class="btn card-btn btn-animated">Add to Cart</button>
                     </div>
                 </div>
             </div>
@@ -156,6 +160,28 @@
                     <span style="font-weight: 600; color: inherit; margin-right: 10px;">Hi, ${currentUser.username}</span>
                     <button onclick="logoutUser()" class="btn btn-outline" style="cursor: pointer;">Logout</button>
                 `;
+            }
+
+            // Mobile Navigation Toggle
+            const menuToggleBtn = document.getElementById('menuToggleBtn');
+            const navLinks = document.getElementById('navLinks');
+            const navActions = document.getElementById('navActions');
+            const hamburgerIcon = document.querySelector('.hamburger-icon');
+
+            if (menuToggleBtn && navLinks) {
+                menuToggleBtn.addEventListener('click', () => {
+                    navLinks.classList.toggle('active');
+                    if (navActions) navActions.classList.toggle('active');
+                    
+                    // Animate icon swap
+                    if (navLinks.classList.contains('active')) {
+                        hamburgerIcon.textContent = '✕';
+                        menuToggleBtn.style.transform = 'rotate(90deg)';
+                    } else {
+                        hamburgerIcon.textContent = '☰';
+                        menuToggleBtn.style.transform = 'rotate(0deg)';
+                    }
+                });
             }
         });
 
