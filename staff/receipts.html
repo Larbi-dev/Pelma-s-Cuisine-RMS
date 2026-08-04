@@ -150,7 +150,7 @@
             <section class="os-metrics-grid">
                 <div class="os-metric-card">
                     <span class="metric-label">TOTAL SHIFT REVENUE</span>
-                    <h3 id="metric-revenue" class="text-accent">₵14.25</h3>
+                    <h3 id="metric-revenue" class="text-accent">₵0.00</h3>
                 </div>
                 <div class="os-metric-card">
                     <span class="metric-label">CASH COLLECTED</span>
@@ -158,11 +158,11 @@
                 </div>
                 <div class="os-metric-card">
                     <span class="metric-label">DIGITAL / MOMO</span>
-                    <h3 id="metric-digital" class="text-accent">₵14.25</h3>
+                    <h3 id="metric-digital" class="text-accent">₵0.00</h3>
                 </div>
                 <div class="os-metric-card alert-card">
                     <span class="metric-label">COMPLETED ORDERS</span>
-                    <h3 id="metric-count">1</h3>
+                    <h3 id="metric-count">0</h3>
                 </div>
             </section>
 
@@ -181,31 +181,7 @@
 
                 <!-- Transaction Cards Grid -->
                 <div id="receipts-grid" class="os-tickets-grid">
-                    <!-- Receipt Card 1 -->
-                    <div class="os-ticket-card receipt-card" data-category="Dine-In" data-id="REC-1001" data-server="Frank">
-                        <div class="os-ticket-header">
-                            <div>
-                                <h4>REC-1001 <span style="font-size: 0.75rem; color: #38bdf8; margin-left: 6px;">[Dine-In]</span></h4>
-                                <span style="font-size: 0.75rem; color: #94a3b8;">Server: Frank | Table #01</span>
-                            </div>
-                            <div class="os-ticket-timer-box">
-                                <span class="ticket-time">11:32 AM</span>
-                                <span class="status-tag cooking" style="background-color: #10b981;">PAID</span>
-                            </div>
-                        </div>
-                        <ul class="os-ticket-items">
-                            <li><span>1x BBQ Burger</span> <strong>₵11.00</strong></li>
-                            <li><span>1x Onion Rings</span> <strong>₵3.25</strong></li>
-                        </ul>
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 0.9rem;">
-                            <span style="color: #94a3b8;">Payment: <strong style="color: #f3f4f6;">MoMo / Digital</strong></span>
-                            <span style="font-size: 1.1rem; font-weight: 700; color: #38bdf8;">Total: ₵14.25</span>
-                        </div>
-                        <div class="os-ticket-actions">
-                            <button class="os-btn-action os-btn-start" onclick="openReceiptModal('REC-1001', 'Dine-In', 'Frank', '11:32 AM', 'MoMo / Digital', '14.25', '1x BBQ Burger (₵11.00), 1x Onion Rings (₵3.25)')"><i class="fa-solid fa-eye"></i> View Details</button>
-                            <button class="os-btn-action os-btn-ready" onclick="printSingleReceipt('REC-1001')"><i class="fa-solid fa-print"></i> Reprint</button>
-                        </div>
-                    </div>
+                    <!-- Dynamically populated from localStorage -->
                 </div>
             </section>
         </main>
@@ -228,12 +204,114 @@
         </div>
     </div>
 
-    <!-- Script Logic for Interactions & Animations -->
+    <!-- Script Logic for Interactions, LocalStorage Sync & Animations -->
     <script>
         let currentModalId = '';
+        let allReceipts = [];
+
+        // Load receipts from localStorage on page startup targeting allOrders first
+        document.addEventListener('DOMContentLoaded', () => {
+            loadAndRenderReceipts();
+        });
+
+        function loadAndRenderReceipts() {
+            const storedData = localStorage.getItem('allOrders') || 
+                               localStorage.getItem('shiftOrders') || 
+                               localStorage.getItem('staffShiftOrders') || '[]';
+            
+            try {
+                allReceipts = JSON.parse(storedData);
+            } catch (e) {
+                console.error("Error parsing local storage receipts:", e);
+                allReceipts = [];
+            }
+
+            // Fallback mock receipt only if storage keys are completely empty
+            if (!Array.isArray(allReceipts) || allReceipts.length === 0) {
+                allReceipts = [
+                    {
+                        id: "REC-1001",
+                        type: "Dine-In",
+                        server: "Frank",
+                        table: "Table #01",
+                        time: "11:32 AM",
+                        payment: "MoMo / Digital",
+                        total: "14.25",
+                        items: [{ name: "BBQ Burger", qty: 1, price: "11.00" }, { name: "Onion Rings", qty: 1, price: "3.25" }]
+                    }
+                ];
+            }
+
+            renderReceiptCards(allReceipts);
+            updateMetrics(allReceipts);
+        }
+
+        function renderReceiptCards(receipts) {
+            const grid = document.getElementById('receipts-grid');
+            grid.innerHTML = '';
+
+            receipts.forEach(rec => {
+                const itemsHtml = (rec.items || []).map(item => `<li><span>${item.qty || item.quantity || 1}x ${item.name || item.title || 'Item'}</span> <strong>₵${item.price || item.amount || '0.00'}</strong></li>`).join('');
+                const itemsStringParam = (rec.items || []).map(i => `${i.qty || i.quantity || 1}x ${i.name || i.title || 'Item'} (₵${i.price || i.amount || '0.00'})`).join(', ');
+                const serverName = rec.server || rec.staff || rec.cashier || 'Staff';
+                const serverDisplay = serverName + (rec.table ? ` | ${rec.table}` : '');
+                const orderType = rec.type || rec.orderType || 'Dine-In';
+                const orderId = rec.id || rec.orderId || rec._id || 'REC-XXX';
+                const orderTotal = rec.total || rec.amount || '0.00';
+                const orderPayment = rec.payment || rec.paymentMethod || 'MoMo / Digital';
+
+                const cardHtml = `
+                    <div class="os-ticket-card receipt-card" data-category="${orderType}" data-id="${orderId}" data-server="${serverName}">
+                        <div class="os-ticket-header">
+                            <div>
+                                <h4>${orderId} <span style="font-size: 0.75rem; color: #38bdf8; margin-left: 6px;">[${orderType}]</span></h4>
+                                <span style="font-size: 0.75rem; color: #94a3b8;">Server: ${serverDisplay}</span>
+                            </div>
+                            <div class="os-ticket-timer-box">
+                                <span class="ticket-time">${rec.time || rec.timestamp || 'Just now'}</span>
+                                <span class="status-tag cooking" style="background-color: #10b981;">PAID</span>
+                            </div>
+                        </div>
+                        <ul class="os-ticket-items">
+                            ${itemsHtml}
+                        </ul>
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; font-size: 0.9rem;">
+                            <span style="color: #94a3b8;">Payment: <strong style="color: #f3f4f6;">${orderPayment}</strong></span>
+                            <span style="font-size: 1.1rem; font-weight: 700; color: #38bdf8;">Total: ₵${orderTotal}</span>
+                        </div>
+                        <div class="os-ticket-actions">
+                            <button class="os-btn-action os-btn-start" onclick="openReceiptModal('${orderId}', '${orderType}', '${serverDisplay}', '${rec.time || rec.timestamp || 'N/A'}', '${orderPayment}', '${orderTotal}', '${itemsStringParam}')"><i class="fa-solid fa-eye"></i> View Details</button>
+                            <button class="os-btn-action os-btn-ready" onclick="printSingleReceipt('${orderId}')"><i class="fa-solid fa-print"></i> Reprint</button>
+                        </div>
+                    </div>
+                `;
+                grid.insertAdjacentHTML('beforeend', cardHtml);
+            });
+        }
+
+        function updateMetrics(receipts) {
+            let totalRev = 0;
+            let cashTotal = 0;
+            let digitalTotal = 0;
+
+            receipts.forEach(rec => {
+                const amt = parseFloat(rec.total || rec.amount) || 0;
+                totalRev += amt;
+                const paymentMethod = (rec.payment || rec.paymentMethod || '').toLowerCase();
+                if (paymentMethod.includes('cash')) {
+                    cashTotal += amt;
+                } else {
+                    digitalTotal += amt;
+                }
+            });
+
+            document.getElementById('metric-revenue').innerText = `₵${totalRev.toFixed(2)}`;
+            document.getElementById('metric-cash').innerText = `₵${cashTotal.toFixed(2)}`;
+            document.getElementById('metric-digital').innerText = `₵${digitalTotal.toFixed(2)}`;
+            document.getElementById('metric-count').innerText = receipts.length;
+        }
 
         function filterReceipts(category) {
-            // Update active state on filter buttons
             const buttons = document.querySelectorAll('.station-filters .filter-btn');
             buttons.forEach(btn => btn.classList.remove('active'));
             event.target.classList.add('active');

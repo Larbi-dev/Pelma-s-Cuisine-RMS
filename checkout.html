@@ -49,9 +49,17 @@
                     </div>
 
                     <h2>2. Payment Method</h2>
-                    <p class="payment-hint">We accept MTN, Telecel, AirtelTigo (AT), Visa, and Mastercard securely via Paystack.</p>
+                    <p class="payment-hint">Choose how you would like to pay for your order.</p>
                     
-                    <button type="submit" class="btn-pay-now">Proceed to Pay Now</button>
+                    <div class="form-group">
+                        <label for="payment-method-select">Select Payment Option</label>
+                        <select id="payment-method-select" style="background: #f7f7f7; border: 2px solid #b6beca; color: #1f1616; padding: 10px; border-radius: 6px; width: 100%;">
+                            <option value="Paystack (MoMo / Card)">MoMo / Card</option>
+                            <option value="Cash">Cash</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-pay-now">Complete Order</button>
                 </form>
             </section>
 
