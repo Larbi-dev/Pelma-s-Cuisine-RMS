@@ -283,7 +283,7 @@ header {
 }
 
 /* =========================
-   POPULAR MENU & CATEGORIES SECTION
+   POPULAR MENU SECTION (HOMEPAGE GRID)
 ========================= */
 #menu {
     padding: var(--section-padding) 0;
@@ -304,13 +304,102 @@ header {
     color: var(--text-light);
 }
 
-/* Category Filter Tabs Styling */
+/* Default Homepage Food Grid (Cards) */
+.food-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 30px;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: var(--transition);
+    border: 1px solid #eaeaea;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-5px);
+}
+
+.card-image-wrapper {
+    height: 220px;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+    background: #f1f1f1;
+}
+
+.food-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card:hover .food-img {
+    transform: scale(1.08);
+}
+
+.food-tag {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #C80707;
+    color: var(--white);
+    padding: 5px 12px;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    z-index: 10;
+    box-shadow: var(--shadow-sm);
+}
+
+.card-body {
+    padding: 25px;
+}
+
+.card-header-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.card-header-flex h3 {
+    font-size: 1.25rem;
+    color: var(--secondary-color);
+}
+
+.price {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #C80707;
+}
+
+.card-body p {
+    color: var(--text-light);
+    font-size: var(--small-size);
+    margin-bottom: 20px;
+}
+
+.card-btn {
+    width: 100%;
+    text-align: center;
+}
+
+/* =========================
+   CATEGORY FILTER TABS & SEARCH
+========================= */
 .category-toggle-wrapper {
     display: flex;
     justify-content: center;
     gap: 10px;
     flex-wrap: wrap;
-    margin: 0 0 40px;
+    margin: 0 0 20px;
 }
 
 .toggle-tab {
@@ -337,7 +426,29 @@ header {
     border-color: #C80707;
 }
 
-/* Menu Category Handling */
+input[type="text"], .search-bar {
+    display: block;
+    width: 100%;
+    max-width: 850px;
+    margin: 0 auto 30px auto;
+    padding: 12px 20px;
+    border: 1px solid #ddd;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: var(--shadow-sm);
+    background-color: var(--card-bg, #fff);
+}
+
+input[type="text"]:focus, .search-bar:focus {
+    border-color: #C80707;
+    box-shadow: 0 0 0 3px rgba(200, 7, 7, 0.1);
+}
+
+/* =========================
+   MENU PAGE ONLY: LIST VIEW OVERRIDE
+========================= */
 .menu-category-content {
     display: none;
 }
@@ -346,7 +457,7 @@ header {
     display: block;
 }
 
-/* Transform Grid into a List Layout */
+/* Target ONLY the food-grid inside menu categories to be a vertical list */
 .menu-category-content .food-grid {
     display: flex;
     flex-direction: column;
@@ -355,21 +466,6 @@ header {
     margin: 0 auto;
 }
 
-.card {
-    background-color: var(--card-bg);
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    transition: var(--transition);
-    border: 1px solid #eaeaea;
-}
-
-.card:hover {
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-3px);
-}
-
-/* List Row Structure for Cards */
 .menu-category-content .food-grid .card {
     display: flex;
     flex-direction: row;
@@ -382,35 +478,13 @@ header {
     width: 110px;
     height: 90px;
     min-width: 110px;
-    position: relative;
-    border-radius: 6px;
-    overflow: hidden;
-    background: #f1f1f1;
 }
 
-.food-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
-}
-
-.card:hover .food-img {
-    transform: scale(1.08);
-}
-
-.food-tag {
-    position: absolute;
+.menu-category-content .food-grid .food-tag {
     top: 6px;
     left: 6px;
-    background-color: #C80707;
-    color: var(--white);
     padding: 2px 8px;
-    border-radius: 4px;
     font-size: 0.65rem;
-    font-weight: 600;
-    z-index: 10;
-    box-shadow: var(--shadow-sm);
 }
 
 .menu-category-content .food-grid .card-body {
@@ -421,26 +495,19 @@ header {
     justify-content: center;
 }
 
-.card-header-flex {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+.menu-category-content .food-grid .card-header-flex {
     margin-bottom: 4px;
 }
 
-.card-header-flex h3 {
+.menu-category-content .food-grid .card-header-flex h3 {
     font-size: 1.1rem;
-    color: var(--secondary-color);
 }
 
-.price {
+.menu-category-content .food-grid .price {
     font-size: 1.1rem;
-    font-weight: 700;
-    color: #C80707;
 }
 
 .menu-category-content .food-grid .card-body p {
-    color: var(--text-light);
     font-size: 0.85rem;
     margin-bottom: 8px;
     display: -webkit-box;
@@ -449,12 +516,11 @@ header {
     overflow: hidden;
 }
 
-.card-btn {
+.menu-category-content .food-grid .card-btn {
     width: auto;
     align-self: flex-start;
     padding: 6px 16px;
     font-size: 0.8rem;
-    text-align: center;
 }
 
 /* =========================
@@ -564,30 +630,4 @@ footer p {
         width: 100%;
         text-align: center;
     }
-}
-
-/* Align and space the search bar and filter buttons nicely */
-.category-toggle-wrapper {
-    margin-bottom: 20px;
-}
-
-/* Style the search input to match your modern design */
-input[type="text"], .search-bar {
-    display: block;
-    width: 100%;
-    max-width: 850px;
-    margin: 0 auto 30px auto;
-    padding: 12px 20px;
-    border: 1px solid #ddd;
-    border-radius: 30px;
-    font-size: 0.95rem;
-    outline: none;
-    transition: all 0.3s ease;
-    box-shadow: var(--shadow-sm);
-    background-color: var(--card-bg, #fff);
-}
-
-input[type="text"]:focus, .search-bar:focus {
-    border-color: #C80707;
-    box-shadow: 0 0 0 3px rgba(200, 7, 7, 0.1);
 }
